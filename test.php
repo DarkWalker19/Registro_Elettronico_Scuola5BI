@@ -1,1 +1,1 @@
-Ciao, come stai?
+Ciao
