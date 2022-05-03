@@ -2,7 +2,7 @@
     session_start();
     
     function get_PDO_connection(){
-        $dbname = 'test';
+        $dbname = 'registro';
         $dsn = "mysql:dbname=$dbname;host=127.0.0.1";
         $db_user = 'root';
         $db_password = '';
@@ -18,7 +18,7 @@
     
     function print_metadata(){
         echo "<meta name='author' content='Gruppo 3'>";
-        echo "<meta name='lang' content='" . isset($_SESSION['lang']) ? $_SESSION['lang'] : 'it' . "'>";
+        echo "<meta name='lang' content='it'>";
         return;
     }
 
@@ -50,12 +50,12 @@
 
     function is_user_admin(){
         is_user_logged();
-        if(!check_role("admin")) error("not_admin");
+        if(!check_role("admin")) error("user_not_admin");
         return;
     }
 
-    function error($params = ""){
-        header("Location: error.php?err=" . $params);
+    function error($err_type = ""){
+        header("Location: error.php?err=" . $err_type);
         exit();
     }
 
