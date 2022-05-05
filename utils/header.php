@@ -11,7 +11,7 @@
     </nav>
 
     <?php
-        if(!isset($_SESSION['user'] || $_SESSION['user'] == null)){
+        if(!isset($_SESSION['user'])){
             echo '<nav class="navbar navbar-expand-lg" style="background-color: #f0e68c">';
             echo "<button onclick=\"location.href='login.php'\" type=\"button\" align=\"right\" hspace=\"10\">Login</button></nav>";
         }else{
