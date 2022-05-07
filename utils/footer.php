@@ -1,16 +1,17 @@
-<?php
-    require_once("utils.php");
-    get_css();
-?>
+<!DOCTYPE html> 
 
 <html>
-    <head></head>
+    <head>
+        <?php
+            require_once("utils.php");
+            get_css();
+        ?>
+    </head>
+
     <body>
         <footer class="text-center text-lg-start bg-light text-muted">
             <!-- Section: Social media -->
-            <section
-            class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-            >
+            <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
             </section>
             <!-- Section: Social media -->
         
@@ -25,9 +26,7 @@
                     <h6 class="text-uppercase fw-bold mb-4">
                         Il sito è stato realizzato da
                     </h6>
-                    <h6 class="text-uppercase fw-bold mb-4">
-                        Gruppo 3
-                    </h6>
+                    <p><i><b>Gruppo 3</b></i></p>
                     <p>
                         Agati Daniele<br>
                         Brecani Arber<br>
@@ -59,7 +58,7 @@
                     </h6>
                     <p>Via Verdi, 19<br>
                     27100 - Pavia, Italia</p>
-                    <p>rserci.s@itiscardano.edu.it</p><br>
+                    <p>rserci.s@itiscardanopv.edu.it</p><br>
 
                 </div>
                 <!-- Grid column -->
@@ -70,7 +69,7 @@
             <!-- Section: Links  -->
         
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: rgba(70, 112, 250, 0.993);">
+            <div class="text-center p-4" style="background-color: #3366FF;">
             </div>
             <!-- Copyright -->
         </footer>
