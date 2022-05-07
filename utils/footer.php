@@ -3,7 +3,7 @@
 <html>
     <head>
         <?php
-            require_once("utils.php");
+            require "utils.php";
             get_css();
         ?>
     </head>
