@@ -23,12 +23,12 @@
     }
 
     function print_header(){
-        include "./utils/header.php";
+        include "header.php";
         return;
     }
 
     function print_footer(){
-        include "./utils/footer.html";
+        include "footer.php";
         return;
     }
 
