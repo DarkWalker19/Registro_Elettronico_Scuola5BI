@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+<?php
+    require_once "utils.php";
+?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <?php
-            require "utils.php";
+            print_metadata();
             get_css();
         ?>
     </head>
@@ -24,7 +27,7 @@
 
         <?php
 
-            if(!isset($_SESSION['user']) || $_SESSION['user'] == null){
+            if(!isset($_SESSION['user'])){
                 echo    '<nav class="navbar navbar-expand-lg" style="background-color: #6699FF">
                             <div class="container-fluid">';
                 echo            "<button class=\"btn btn-primary\" style=\"background-color: #98CCFF;\" onclick=\"location.href='login.php'\" type=\"button\" align=\"right\" hspace=\"10\">Login</button>

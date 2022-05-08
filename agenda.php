@@ -1,83 +1,121 @@
 <?php
-    require "utils/utils.php";
+    require_once "utils/utils.php";
 
     is_user_logged();
 
-    function diag($id, $type, $date=null, $hour=null, $isReq=false, $motiv=null){
-        // Fare una unica roba perchè così fa schifissimo :) Lazy Serci
+    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date=null, $hour=null, $motiv=''){
         // motiv in motivazione.value -> se rifiutato l'evento
-        if($isReq){
-            echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reqModal">
-                                Richiesta
-                            </button>
-                            
-                            <form method="POST" action="/updateAssenza.php">
-                                <div class="modal fade" id="reqModal" tabindex="-1" role="dialog" aria-labelledby="reqModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="reqModalLabel">Richiesta ' . $type . '</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Richiesta di Uscita Anticipata</p>
-                                            <label for="date">Data</label><br>
-                                            <input type="date" id="date" name="date" required><br>
-                                            <label for="hour">Ora</label><br>
-                                            <input type="time" id="hour" name="hour" min="8:00" max="16:00" required><br>
-                                            <label for="motivation">Motivazione</label><br>
-                                            <input type="text" id="motivation" name="motivation" required><br>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                                        <input type="submit" value="Invia" class="btn btn-primary">
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </form>';
-        }
-        else{
-            $rAdditText = $type == "Ritardo" ? '<p>Entrata alle: ' . $hour . '</p>' : '';
+        // aggiungere se l'evento è u ant ed è stato rifiutato oppure controllare su prog es se viene scartata direttamente la richiesta
+        // -> $eReq : cambiare 
+        $MIN_H = '8:00';
+        $MAX_H = '16:00';
 
-            echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                Giustifica
-                            </button>
-                            
-                            <form method="POST" action="/updateAssenza.php">
-                                <div class="modal fade" id="' . $id . 'Modal" tabindex="-1" role="dialog" aria-labelledby="' . $id . 'ModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="' . $id . 'ModalLabel">Giustifica ' . $type . '</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="hidden" id="id" name="id" value="' . $id . '" required>
-                                            <p>' . $type . ' del ' . $date . '</p>
-                                            ' . $rAdditText . '
-                                            <label for="motivation">Motivazione</label><br>
-                                            <input type="text" id="motivation" name="motivation" required><br>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                                        <input type="submit" value="Invia" class="btn btn-primary">
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </form>';
+        if(!is_bool($eLate) || !is_bool($isReq)) error("PHP_bad_diag_params_type");
+        if($isReq && $eLate || $isReq && $motiv != '') error("PHP_diag_params_conflict");
+        if($eLate && $date == null || $eLate && $hour == null || !$eLate && !$isReq && $date == null) error("PHP_insufficient_diag_params");
+
+        $modalName = $isReq ? "reqModal" : $id . "Modal";
+
+        $btnText = $isReq ? "Richiedi" : "Giustifica"; //cambiare in giustifica / modifica
+        $title = $isReq ? "Richiesta di Uscita Anticipata" : "Evento";
+                // Cambiare entrata / uscita
+                // Text before form
+        $body = $eLate ? '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b>' : ($isReq ? '<p>Richiesta di Uscita Anticipata</p>' : '<p>Assenza del: <b>' . $date . '</b></p>');
+        $body .= '<br>';
+
+        $body .= $isReq ?
+                // Richiesta Uscita Anticipata
+                '
+                    <label for="date">Data</label><br>
+                    <input type="date" id="date" name="date" required><br>
+                    <label for="hour">Ora</label><br>
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>'
+                : 
+                // Assenza || Ritardo
+                '
+                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+                // Motivazione
+        $body .= '
+                <label for="motivation">Motivazione</label><br>
+                <input type="text" id="motivation" name="motivation" value=' . $motiv . ' required><br>';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+            <form method="POST" action="/updateAssenza.php">
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $body . '
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <input type="submit" value="Invia" class="btn btn-primary">
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>';
+        return $diag;
+    }
+
+    function eventTable($section='', $events=[], $canUpdate=false){
+        $eLate = false;
+        $isReq = false;
+        if ($section == 'r') $eLate = true;
+
+        $table = "<table>";
+
+        $tableHeaders = "<tr>
+                    <th>Id</th><th>Stato</th><th>Data</th>";
+        $tableHeaders .= $section == 'r' ? '<th>Ora Entrata</th>' : ($section == 'u' ? "<th>Ora Uscita</th>" : '');
+
+        $tableHeaders .= "<th>Motivazione</th></tr>";
+
+        $table .= $tableHeaders;
+////////
+        $eventO = "";
+
+        foreach($events as $record){
+            $table .= "<tr>";
+            $table .= "<td>" . $record['Id'] . "</td>";
+            $table .= "<td>" . $record['Stato'] . "</td>";
+            $table .= "<td>" . $record['Data'] . "</td>";
+            
+            if($section == 'r'){
+                $eventO = $record['Ora_Entrata'];
+            }
+            if($section == 'u'){
+                $eventO = $record['Ora_Uscita'];
+            }
+
+            $table .= $eventO;
+
+            $table .= "<td>" . $record['Motivazione'] . "</td>";
+
+            $table .= $canUpdate ? diag($record['Id'], $eLate, $isReq, $record['Data'], $eventO, $record['Motivazione']) : '';
+
+            $table .= "</tr>";
         }
+        $table .= "</table>";
+
+        return $table;
     }
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <title>Agenda</title>
             <?php
+               print_metadata();
                get_css();
             ?>
             <script>
@@ -95,81 +133,69 @@
             print_header();
             
             $isAdmin = check_role('admin');
-            $isOld = check_role('student_old') || check_role('parent');
+            $canUpdate = $_SESSION['adult'] || check_role('parent');
 
-            $con= get_PDO_connection();
+            $con = get_PDO_connection();
 
             if(isset($_GET['section'])){
 
                 $section = $_GET['section'];
-        
+
                 switch($section){
                     case 'a':
-                        // tabella assenza
+                        // Tabella Assenze
                         echo "<h1>Assenze</h1>";
                         $qry = 'SELECT * FROM Evento WHERE Tipo = "Assenza"';
                         
                         $stm = $con->query($qry);
-                        
-                        $list = $stm->fetchAll();
-                        echo "<table>";
-                        echo "<tr><th>Id</th><th>Stato</th><th>Data</th><th>Motivazione</th></tr>";
-                        foreach($list as $record){
-                            echo "<tr>";
-                            echo "<td>" . $record['Id'] . "</td>";
-                            echo "<td>" . $record['Stato'] . "</td>";
-                            echo "<td>" . $record['Data'] . "</td>";
-                            echo "<td>" . $record['Motivazione'] . "</td>";
-
-                            if($isOld) diag($record['Id'], "Assenza", $record['Data']);
-
-                            echo "</tr>";
+                        if($stm->rowCount() > 0){
+                            $events = $stm->fetchAll();
+                            echo eventTable($section, $events, $canUpdate);
                         }
-                        echo "</table>";
+                        else
+                            echo "<p>Non ci sono Assenze</p>";
+
                         break;
         
                     case 'r':
-                        // tabella ritardo  
-                        echo "<h1>Ritardo</h1>";
+                        // Tabella Ritardi  
+                        echo "<h1>Ritardi</h1>";
                         $qry = 'SELECT * FROM Evento WHERE  Tipo = "Ritardo"';
                         
                         $stm = $con->query($qry);
-                        
-                        $list = $stm->fetchAll();
-                        echo "<table>";
-                        echo "<tr><th>Id</th><th>Stato</th><th>Data</th><th>Ora Entrata</th><th>Motivazione</th></tr>";
-                        foreach($list as $record){
-                            echo"<tr>";
-                            echo "<td>" . $record['Id'] . "</td>";
-                            echo "<td>" . $record['Stato'] . "</td>";
-                            echo "<td>" . $record['Data'] . "</td>";
-                            echo "<td>" . $record['Ora_entrata'] . "</td>";
-                            echo "<td>" . $record['Motivazione'] . "</td>";
-                            echo"</tr>";
+                        if($stm->rowCount() > 0){
+                            $events = $stm->fetchAll();
+                            echo eventTable($section, $events, $canUpdate);
                         }
-                        echo "</table>";
+                        else
+                            echo "<p>Non ci sono Ritardi</p>";
+
                         break;
                     
                     case 'u':
-                        // tabella uscite
-                        echo "<h1>Uscite</h1>";
+                        // Tabella Uscite
+                        echo "<h1>Richieste di Uscita Anticipata</h1>";
                         $qry = 'SELECT * FROM Evento WHERE  Tipo = "Ritardo"';
                         
                         $stm = $con->query($qry);
-                        
-                        $list = $stm->fetchAll();
-                        echo "<table>";
-                        echo "<tr><th>Id</th><th>Stato</th><th>Data</th><th>Ora Uscita</th><th>Motivazione</th></tr>";
-                        foreach($list as $record){
-                            echo "<tr>";
-                            echo "<td>" . $record['Id'] . "</td>";
-                            echo "<td>" . $record['Stato'] . "</td>";
-                            echo "<td>" . $record['Data'] . "</td>";
-                            echo "<td>" . $record['Ora_uscita'] . "</td>";
-                            echo "<td>" . $record['Motivazione'] . "</td>";
-                            echo "</tr>";
+                        if($stm->rowCount() > 0){
+                            $events = $stm->fetchAll();
+                            echo eventTable($section, $events, $canUpdate);
                         }
-                        echo "</table>";
+                        else
+                            echo "<p>Non ci sono Richieste di Uscita Anticipata</p>";
+
+                        break;
+
+                    case 'c':
+                        // Tabella Classi
+                        is_user_admin();
+
+                        $class = $_GET['class'];
+                        $student = $_GET['m'];
+
+                        //aggiungere controlli per focussare la ricerca
+
                         break;
         
                     default:
@@ -177,6 +203,7 @@
                         break;
                 }
             }
+            print_footer();
         ?>
     </body> 
 </html>  

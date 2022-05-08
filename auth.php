@@ -1,5 +1,5 @@
 <?php
-    require "./utils/utils.php";
+    require_once "utils/utils.php";
     
 
     if(!isset($_POST['matricola']) || !isset($_POST['password']) || !isset($_POST['captcha'])) error("invalid_login_form");

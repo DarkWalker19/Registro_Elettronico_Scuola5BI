@@ -1,11 +1,12 @@
 <?php
-	require "./utils/utils.php";
+	require_once "utils/utils.php";
     session_destroy();
 ?>
 <html>
     <head>
         <title>Logout</title>
         <?php
+            print_metadata();
             get_css();
         ?>
     </head>

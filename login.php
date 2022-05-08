@@ -1,10 +1,11 @@
 <?php
-    require "./utils/utils.php";
+    require_once "utils/utils.php";
 ?>
 <html>
     <head>
         <title>Login</title>
         <?php
+			print_metadata();
             get_css();
         ?>
     </head>

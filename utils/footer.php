@@ -1,9 +1,12 @@
-<!DOCTYPE html> 
+<?php
+    require_once "utils.php";
+?>
 
+<!DOCTYPE html> 
 <html>
     <head>
         <?php
-            require "utils.php";
+            print_metadata();
             get_css();
         ?>
     </head>
