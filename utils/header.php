@@ -14,8 +14,8 @@
     <body>
         <nav class="navbar navbar-light" style="background-color: #3366FF;">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: white; font-size: 25px" href="index.php">
-                    <p>REGISTRO ELETTRONICO<br>
+                <a class="navbar-brand" href="index.php">
+                    <p style="color: white; font-size: 25px">REGISTRO ELETTRONICO<br>
                         <i style="font-size: 10px">Itis G. Cardano</i>
                     </p>
                 </a>
