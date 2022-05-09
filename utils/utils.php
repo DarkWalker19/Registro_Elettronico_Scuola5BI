@@ -2,8 +2,11 @@
     session_start();
     
     function get_PDO_connection(){
+        //$dbname = 'uvfsyhtv_wp183';
         $dbname = 'registro';
         $dsn = "mysql:dbname=$dbname;host=127.0.0.1";
+        //$db_user = 'uvfsyhtv';
+        //$db_password = 'LdAD5lxZ@w*172';
         $db_user = 'root';
         $db_password = '';
         
