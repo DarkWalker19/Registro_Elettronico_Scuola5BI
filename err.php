@@ -18,13 +18,12 @@
         </div>
         <div class="">
             <?php
-            if(!isset($_GET['err'])){
+                if(!isset($_GET['err']))
                     echo "No error provided";
-                    exit();
+                else{
+                    $err = $_GET['err'];
+                    echo "Error: $err";
                 }
-
-                $err = $_GET['err'];
-                echo "Error: $err";
             ?>
         </div>
         <br>
