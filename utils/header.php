@@ -14,13 +14,13 @@
     <body>
         <nav class="navbar navbar-light" style="background-color: #3366FF;">
             <div class="container-fluid">
-                <a class="navbar-brand" style="color: white;" href="index.php">
+                <a class="navbar-brand" style="color: white; font-size: 25px" href="index.php">
                     <p>REGISTRO ELETTRONICO<br>
                         <i style="font-size: 10px">Itis G. Cardano</i>
                     </p>
                 </a>
                 <a href="https://www.itiscardanopv.edu.it/">
-                    <img src="../img/logo.png" alt="LogoRegistro" height="60" width="60" border="2" align="right" hspace="10"></img>
+                    <img src="./img/logo.png" alt="LogoRegistro" height="60" width="60" border="2" align="right" hspace="10"></img>
                 </a>
             </div>
         </nav>
@@ -30,7 +30,7 @@
             if(!isset($_SESSION['user'])){
                 echo    '<nav class="navbar navbar-expand-lg" style="background-color: #6699FF">
                             <div class="container-fluid">';
-                echo            "<button class=\"btn btn-primary\" style=\"background-color: #98CCFF;\" onclick=\"location.href='login.php'\" type=\"button\" align=\"right\" hspace=\"10\">Login</button>
+                echo            "<button class=\"btn btn-primary\" style=\"background-color: #98CCFF;\" onclick=\"location.href='login.php'\" type=\"button\">Login</button>
                             </div>
                         </nav>";
             }else
