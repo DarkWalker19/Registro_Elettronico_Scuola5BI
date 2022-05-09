@@ -33,8 +33,8 @@
     }
 
     function get_css(){
-        echo "<link rel='icon' href='../img/logo.png'>";
-        echo "<link href='../css/main.css' rel='stylesheet'></link>";
+        echo "<link rel='icon' href='./img/logo.png'>";
+        echo "<link href='./css/main.css' rel='stylesheet'></link>";
         echo "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3' crossorigin='anonymous'></link>";
         return;
     }
@@ -55,7 +55,7 @@
     }
 
     function error($err_type = ""){
-        header("Location: error.php?err=" . $err_type);
+        header("Location: err.php?err=" . $err_type);
         exit();
     }
 
