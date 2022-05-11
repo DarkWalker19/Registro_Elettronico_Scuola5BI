@@ -15,7 +15,7 @@
         <nav class="navbar navbar-light" style="background-color: #3366FF;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <p style="color: white; font-size: 25px">REGISTRO ELETTRONICO<br>
+                    <p style="color: white; font-size: 25px">LIBRETTO ELETTRONICO<br>
                         <i style="font-size: 10px">Itis G. Cardano</i>
                     </p>
                 </a>
@@ -29,7 +29,7 @@
 
             if(!isset($_SESSION['user'])){
                 echo    '<nav class="navbar navbar-expand-lg" style="background-color: #6699FF">
-                            <div class="container-fluid">';
+                            <div align="right" class="container-fluid">';
                 echo            "<button class=\"btn btn-primary\" style=\"background-color: #98CCFF;\" onclick=\"location.href='login.php'\" type=\"button\">Login</button>
                             </div>
                         </nav>";

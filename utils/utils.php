@@ -94,10 +94,12 @@
         $obContents = ob_get_contents();
         ob_end_clean();
         imagedestroy($img);
+
+        get_css();
         
+        echo '<img src="data:image/png;base64,' . base64_encode($obContents) . '" /><br><br>';
         echo "<label for='captcha'>Captcha</label><br>";
-        echo '<img src="data:image/png;base64,' . base64_encode($obContents) . '" /><br>';
-        echo "<input type='text' placeholder='Captcha' name='captcha' required>";
+        echo "<input style=background-color:#99ccff;width:10cm; class=form-control type='text' placeholder='Inserisci Captcha' name='captcha' required></input>";
         return $text;
     }
 
