@@ -1,7 +1,7 @@
 <?php
     require_once "utils/utils.php";
 ?>
-<html lang="it">
+<html>
     <head>
         <title>Pagina Iniziale</title>
     </head>
