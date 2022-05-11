@@ -3,9 +3,7 @@
 
     is_user_logged();
 
-    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date='', $hour='', $motiv='', $state=''){
-        // aggiungere se l'evento è u ant ed è stato rifiutato oppure controllare su prog es se viene scartata direttamente la richiesta
-        // -> $eReq : cambiare 
+    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date='', $hour='', $motiv='', $state=''){ 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
@@ -19,7 +17,7 @@
         $btnText = $isReq || $eReq ? "Richiedi" : "Apri";
         $title = $isReq || $eReq ? "Richiesta di Uscita Anticipata" : "Evento";
         $req_text = $eReq ? "<br><p>del <b>" . $date . "</b> alle ore <b>" . $hour . "</b></p>" : "";
-                // Cambiare entrata / uscita
+
                 // Text before form
         $body = $eLate ? '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b>' : ($isReq || $eReq ? '<p>Richiesta di Uscita Anticipata</p>' . $req_text : '<p>Assenza del: <b>' . $date . '</b></p>');
         $body .= '<br>';
