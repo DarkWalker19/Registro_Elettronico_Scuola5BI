@@ -17,12 +17,12 @@
 			<div class="form-row">
 				<h4>Accedi con le credenziali</h4><br>
 				<div class="form-group col-md-6">
-					<label for="inputMat">Matricola</label>
-					<input style=background-color:#99ccff;width:10cm;type="text" class="form-control" placeholder="Inserisci Matricola" id="m"></input>
+					<label for="id">Matricola</label>
+					<input style=background-color:#99ccff;width:10cm; type="text" class="form-control" placeholder="Inserisci Matricola" id="id"></input>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="inputPass">Password</label>
-					<input style=background-color:#99ccff;width:10cm; type="password" class="form-control" placeholder="Inserisci Password" id="p"></input>
+					<label for="password">Password</label>
+					<input style=background-color:#99ccff;width:10cm; type="password" class="form-control" placeholder="Inserisci Password" id="password"></input>
 				</div><br>
 				<?php
 					$_SESSION['captcha'] = generate_captcha();
