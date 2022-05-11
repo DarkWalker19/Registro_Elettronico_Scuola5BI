@@ -2,9 +2,9 @@
     require_once "utils/utils.php";
     
 
-    if(!isset($_POST['matricola']) || !isset($_POST['password']) || !isset($_POST['captcha'])) error("invalid_login_form");
+    if(!isset($_POST['id']) || !isset($_POST['password']) || !isset($_POST['captcha'])) error("invalid_login_form");
     
-    $user = $_POST['matricola'];
+    $user = $_POST['id'];
     $password = $_POST['password'];
     $captcha = $_POST['captcha'];
     
