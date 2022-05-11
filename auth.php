@@ -14,9 +14,7 @@
     }
 
     $db = get_PDO_connection();
-    // è inutile prendere gli altri parametri.
-    // prendi matricola nome cognome data nascita
-    $query = "SELECT matricola, nome, cognome, password FROM bar_user WHERE matricola = $user AND password = $password;";
+    $query = "SELECT Matricola, Nome, Cognome, Data_nascita, Tipo FROM utente WHERE Matricola = $user AND Password = $password;";
     
     $result = $db->prepare($query);
     $result->execute([$user, $password]);
@@ -26,9 +24,16 @@
     }
     else{
         $row = $result->fetch();
-        $_SESSION['user'] = $user;
-        // aggiungere controllo se è studente se è adulto
-        // session name = nome spazio cognome
+        $_SESSION['user'] = $row[0];
+        $_SESSION['name'] = $row[1] . " " . $row[2];
+        $_SESSION['role'] = $row[4];
+
+        if(check_role('student')){
+            if(date_diff(date_create($row[3]), date_create(date("dd-mm-YY")))->format("%y") >= 18)
+                $_SESSION['adult'] = true;
+            else
+                $_SESSION['adult'] = false;
+        }
         header("Location: index.php");
     }
 ?>

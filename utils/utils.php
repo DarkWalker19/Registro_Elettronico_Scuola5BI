@@ -96,7 +96,7 @@
         imagedestroy($img);
         
         echo "<label for='captcha'>Captcha</label><br>";
-        echo '<img src="data:image/png;base64,' . base64_encode($obContents) . '" /><br>';
+        echo '<img src="data:image/png;base64,' . base64_encode($obContents) . '" /><br><br>';
         echo "<input type='text' placeholder='Captcha' name='captcha' required>";
         return $text;
     }

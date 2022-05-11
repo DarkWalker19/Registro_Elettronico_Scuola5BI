@@ -3,12 +3,12 @@
 
     is_user_logged();
 
-    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date=null, $hour=null, $motiv=''){
-        // motiv in motivazione.value -> se rifiutato l'evento
+    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date='', $hour='', $motiv='', $state=''){
         // aggiungere se l'evento è u ant ed è stato rifiutato oppure controllare su prog es se viene scartata direttamente la richiesta
         // -> $eReq : cambiare 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
 
         if(!is_bool($eLate) || !is_bool($isReq)) error("PHP_bad_diag_params_type");
         if($isReq && $eLate || $isReq && $motiv != '') error("PHP_diag_params_conflict");
@@ -16,28 +16,44 @@
 
         $modalName = $isReq ? "reqModal" : $id . "Modal";
 
-        $btnText = $isReq ? "Richiedi" : "Giustifica"; //cambiare in giustifica / modifica
-        $title = $isReq ? "Richiesta di Uscita Anticipata" : "Evento";
+        $btnText = $isReq || $eReq ? "Richiedi" : "Apri";
+        $title = $isReq || $eReq ? "Richiesta di Uscita Anticipata" : "Evento";
+        $req_text = $eReq ? "<br><p>del <b>" . $date . "</b> alle ore <b>" . $hour . "</b></p>" : "";
                 // Cambiare entrata / uscita
                 // Text before form
-        $body = $eLate ? '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b>' : ($isReq ? '<p>Richiesta di Uscita Anticipata</p>' : '<p>Assenza del: <b>' . $date . '</b></p>');
+        $body = $eLate ? '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b>' : ($isReq || $eReq ? '<p>Richiesta di Uscita Anticipata</p>' . $req_text : '<p>Assenza del: <b>' . $date . '</b></p>');
         $body .= '<br>';
 
         $body .= $isReq ?
                 // Richiesta Uscita Anticipata
                 '
                     <label for="date">Data</label><br>
-                    <input type="date" id="date" name="date" required><br>
+                    <input type="date" id="date" name="date" required ' . $READONLY . '><br>
                     <label for="hour">Ora</label><br>
-                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>'
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required ' . $READONLY . '><br>'
                 : 
                 // Assenza || Ritardo
                 '
                 <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+
                 // Motivazione
         $body .= '
                 <label for="motivation">Motivazione</label><br>
-                <input type="text" id="motivation" name="motivation" value=' . $motiv . ' required><br>';
+                <input type="text" id="motivation" name="motivation" value=' . $motiv . ' required ' . $READONLY . '><br>';
+        
+        $approve = check_role('admin') && $state == "In attesa" ?
+                    '<br>
+                    <input type="radio" id="approve" name="m" value="a">
+                    <label for="m">Accetta</label><br>
+                    <input type="radio" id="deny" name="m" value="d">
+                    <label for="m">Rifiuta</label><br>'
+                    : '';
+        
+        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                    :
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
 
         $diag = '
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
@@ -55,10 +71,10 @@
                         </div>
                         <div class="modal-body">
                             ' . $body . '
+                            ' . $approve . '
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                        <input type="submit" value="Invia" class="btn btn-primary">
+                        ' . $footer . '
                         </div>
                     </div>
                     </div>
@@ -81,8 +97,8 @@
         $tableHeaders .= "<th>Motivazione</th></tr>";
 
         $table .= $tableHeaders;
-////////
-        $eventO = "";
+
+        $eventH = "";
 
         foreach($events as $record){
             $table .= "<tr>";
@@ -91,18 +107,18 @@
             $table .= "<td>" . $record['Data'] . "</td>";
             
             if($section == 'r'){
-                $eventO = $record['Ora_Entrata'];
+                $eventH = $record['Ora_entrata'];
             }
             if($section == 'u'){
-                $eventO = $record['Ora_Uscita'];
+                $eventH = $record['Ora_escita'];
             }
 
-            $table .= $eventO;
+            $table .= $eventH;
 
             $table .= "<td>" . $record['Motivazione'] . "</td>";
 
-            $table .= $canUpdate ? diag($record['Id'], $eLate, $isReq, $record['Data'], $eventO, $record['Motivazione']) : '';
-
+            $table .= $canUpdate ? diag($record['Id'], $eLate, $isReq, $record['Data'], $eventH, $record['Motivazione'], $record['Stato']) : '';
+// aggiungere tasto rimuovi
             $table .= "</tr>";
         }
         $table .= "</table>";
