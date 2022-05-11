@@ -13,7 +13,9 @@
         error("invalid_captcha");
     }
 
-    $db = get_db_connection();
+    $db = get_PDO_connection();
+    // è inutile prendere gli altri parametri.
+    // prendi matricola nome cognome data nascita
     $query = "SELECT matricola, nome, cognome, password FROM bar_user WHERE matricola = $user AND password = $password;";
     
     $result = $db->prepare($query);
@@ -24,9 +26,9 @@
     }
     else{
         $row = $result->fetch();
-        $_SESSION['user_id'] = $row[0];
         $_SESSION['user'] = $user;
-        
+        // aggiungere controllo se è studente se è adulto
+        // session name = nome spazio cognome
         header("Location: index.php");
     }
 ?>
