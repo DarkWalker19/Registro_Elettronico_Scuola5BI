@@ -1,7 +1,6 @@
 <?php
     require_once "utils/utils.php";
     
-
     if(!isset($_POST['id']) || !isset($_POST['password']) || !isset($_POST['captcha'])) error("invalid_login_form");
     
     $user = $_POST['id'];
@@ -14,7 +13,7 @@
     }
 
     $db = get_PDO_connection();
-    $query = "SELECT Matricola, Nome, Cognome, Data_nascita, Tipo FROM utente WHERE Matricola = $user AND Password = $password;";
+    $query = "SELECT Matricola, Nome, Cognome, Data_nascita, Tipo FROM utente WHERE Matricola = ? AND Password = ?";
     
     $result = $db->prepare($query);
     $result->execute([$user, $password]);
