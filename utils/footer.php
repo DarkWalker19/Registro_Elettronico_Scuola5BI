@@ -5,10 +5,6 @@
 <!DOCTYPE html> 
 <html>
     <head>
-        <?php
-            print_metadata();
-            get_css();
-        ?>
     </head>
 
     <body>

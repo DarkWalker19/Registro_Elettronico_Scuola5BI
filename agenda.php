@@ -128,10 +128,6 @@
 <html>
     <head>
         <title>Agenda</title>
-            <?php
-               print_metadata();
-               get_css();
-            ?>
             <script>
                 let today = '<?php
                     echo date("Y-m-d");

@@ -4,10 +4,6 @@
 <html>
     <head>
         <title>Error</title>
-        <?php
-            print_metadata();
-            get_css();
-        ?>
     </head>
     <body>
         <?php
