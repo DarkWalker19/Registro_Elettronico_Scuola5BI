@@ -25,7 +25,7 @@
         <br>
         <p>Hai bisogno di aiuto? Contatta: rserci.s@itiscardanopv.edu.it</p>
         <br><br>
-        <button onclick="location.href='index.php'" type="button" class="backButton">Indietro</button>
+        <button onclick="location.href='index.php'" type="button" class="btn btn-primary">Indietro</button>
         <?php
             print_footer();
         ?>
