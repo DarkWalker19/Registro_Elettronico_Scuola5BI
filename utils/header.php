@@ -5,22 +5,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-            print_metadata();
-            get_css();
-        ?>
     </head>
 
     <body>
         <nav class="navbar navbar-light" style="background-color: #3366FF;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <p style="color: white; font-size: 25px">LIBRETTO ELETTRONICO<br>
+                    <p style="color: white; font-size: 30px">LIBRETTO ELETTRONICO<br>
                         <i style="font-size: 10px">Itis G. Cardano</i>
                     </p>
                 </a>
                 <a href="https://www.itiscardanopv.edu.it/">
-                    <img src="./img/logo.png" alt="LogoRegistro" height="60" width="60" border="2" align="right" hspace="10"></img>
+                    <img src="./img/logo.png" alt="LogoRegistro" height="60" width="60"></img>
                 </a>
             </div>
         </nav>

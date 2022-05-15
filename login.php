@@ -4,6 +4,24 @@
 <html>
     <head>
         <title>Login</title>
+		<?php
+            print_metadata();
+            get_css();
+        ?>
+		<script>
+			const togglePassword = document.querySelector("#togglePassword");
+        	const password = document.querySelector("#password");
+
+        	togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            	const type = password.getAttribute("type") === "password" ? "text" : "password";
+            	password.setAttribute("type", type);
+            
+            // toggle the icon
+            	this.classList.toggle("bi-eye");
+        	});
+		</script>
+		
     </head>
     <body>
 		<?php
@@ -19,6 +37,7 @@
 				<div class="form-group col-md-6">
 					<label for="password">Password</label>
 					<input style=background-color:#99ccff;width:10cm; type="password" class="form-control" placeholder="Inserisci Password" id="password" name="password"></input>
+					<i class="bi bi-eye-slash" id="togglePassword"></i>
 				</div><br>
 				<?php
 					$_SESSION['captcha'] = generate_captcha();
