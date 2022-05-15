@@ -5,6 +5,10 @@
 <html>
     <head>
         <title>Logout</title>
+        <?php
+            print_metadata();
+            get_css();
+        ?>
     </head>
     <body>
         <?php
