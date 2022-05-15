@@ -28,7 +28,12 @@
         $_SESSION['role'] = $row[4];
 
         if(check_role('student')){
-            if(date_diff(date_create($row[3]), date_create(date("dd-mm-YY")))->format("%y") >= 18)
+            $born_date = new DateTime($row[3]);
+            $today = new DateTime('now');
+            
+            $age = $today->diff($born_date);
+
+            if(intval($age->format("%y")) >= 18)
                 $_SESSION['adult'] = true;
             else
                 $_SESSION['adult'] = false;
