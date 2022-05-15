@@ -8,9 +8,9 @@
         $MAX_H = '16:00';
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
 
-        if(!is_bool($eLate) || !is_bool($isReq)) error("PHP_bad_diag_params_type");
-        if($isReq && $eLate || $isReq && $motiv != '') error("PHP_diag_params_conflict");
-        if($eLate && $date == null || $eLate && $hour == null || !$eLate && !$isReq && $date == null) error("PHP_insufficient_diag_params");
+        //if(!is_bool($eLate) || !is_bool($isReq)) error("PHP_bad_diag_params_type");
+        //if($isReq && $eLate || $isReq && $motiv != '') error("PHP_diag_params_conflict");
+        //if($eLate && $date == null || $eLate && $hour == null || !$eLate && !$isReq && $date == null) error("PHP_insufficient_diag_params");
 
         $modalName = $isReq ? "reqModal" : $id . "Modal";
 
@@ -82,6 +82,7 @@
     }
 
     function eventTable($section='', $events=[], $canUpdate=false){
+        // aggiungere controlli
         $eLate = false;
         $isReq = false;
         if ($section == 'r') $eLate = true;
@@ -115,7 +116,7 @@
 
             $table .= "<td>" . $record['Motivazione'] . "</td>";
 
-            $table .= $canUpdate ? diag($record['Id'], $eLate, $isReq, $record['Data'], $eventH, $record['Motivazione'], $record['Stato']) : '';
+            $table .= $canUpdate ? "<td>" . diag($record['Id'], $eLate, $isReq, $record['Data'], $eventH, $record['Motivazione'], $record['Stato']) . "</td>" : '';
 // aggiungere tasto rimuovi
             $table .= "</tr>";
         }
@@ -124,10 +125,13 @@
         return $table;
     }
 ?>
-<!DOCTYPE html>
 <html>
     <head>
         <title>Agenda</title>
+        <?php
+            print_metadata();
+            get_css();
+        ?>
             <script>
                 let today = '<?php
                     echo date("Y-m-d");
@@ -144,8 +148,9 @@
             
             $isAdmin = check_role('admin');
             $canUpdate = $_SESSION['adult'] || check_role('parent');
+            $student = $isAdmin ? null : (check_role('parent') ? $_SESSION['son'] : $_SESSION['user']);
 
-            $con = get_PDO_connection();
+            $db = get_PDO_connection();
 
             if(isset($_GET['section'])){
 
@@ -154,10 +159,14 @@
                 switch($section){
                     case 'a':
                         // Tabella Assenze
+                        if($isAdmin) error("forbidden_page");
+
                         echo "<h1>Assenze</h1>";
-                        $qry = 'SELECT * FROM Evento WHERE Tipo = "Assenza"';
-                        
-                        $stm = $con->query($qry);
+
+                        $qry = 'SELECT * FROM evento WHERE Tipo = "Assenza" AND U_Matricola = ?';
+                        $stm = $db->prepare($qry);
+                        $stm->execute([$student]);
+
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
                             echo eventTable($section, $events, $canUpdate);
@@ -168,11 +177,15 @@
                         break;
         
                     case 'r':
-                        // Tabella Ritardi  
+                        // Tabella Ritardi
+                        if($isAdmin) error("forbidden_page");
+
                         echo "<h1>Ritardi</h1>";
-                        $qry = 'SELECT * FROM Evento WHERE  Tipo = "Ritardo"';
+
+                        $qry = 'SELECT * FROM evento WHERE Tipo = "Ritardo" AND U_Matricola = ?';
+                        $stm = $db->prepare($qry);
+                        $stm->execute([$student]);
                         
-                        $stm = $con->query($qry);
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
                             echo eventTable($section, $events, $canUpdate);
@@ -184,10 +197,14 @@
                     
                     case 'u':
                         // Tabella Uscite
+                        if($isAdmin) error("forbidden_page");
+
                         echo "<h1>Richieste di Uscita Anticipata</h1>";
-                        $qry = 'SELECT * FROM Evento WHERE  Tipo = "Ritardo"';
-                        
-                        $stm = $con->query($qry);
+
+                        $qry = 'SELECT * FROM evento WHERE Tipo = "Uscita" AND U_Matricola = ?';
+                        $stm = $db->prepare($qry);
+                        $stm->execute([$student]);
+
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
                             echo eventTable($section, $events, $canUpdate);
@@ -201,8 +218,33 @@
                         // Tabella Classi
                         is_user_admin();
 
-                        $class = $_GET['class'];
-                        $student = $_GET['m'];
+                        if(isset($_GET['class'])){
+                            $qry = 'SELECT * FROM appartenere WHERE U_Matricola = ? AND C_Id = ?';
+                            $stm = $db->prepare($qry);
+                            $stm->execute([$_SESSION['user'], $_GET['class']]);
+
+                            if($stm->rowCount() > 0){
+                                $events = $stm->fetchAll();
+                                echo $_GET['class'];
+                                //echo eventTable($section, $events, $canUpdate);
+                            }
+                            else
+                                error('class_not_belong_to_user');
+                        }
+                        else{
+                            $qry = 'SELECT Anno, Sezione FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = "?"';
+                            $stm = $db->prepare($qry);
+                            $stm->execute([$_SESSION['user']]);
+
+                            if($stm->rowCount() > 0){
+                                $events = $stm->fetchAll();
+                                echo "tante classi";
+                                //echo eventTable($section, $events, $canUpdate);
+                            }
+                            else
+                                echo "<p>Non appartieni a nessuna Classe</p>";
+                        }
+                        
 
                         //aggiungere controlli per focussare la ricerca
 

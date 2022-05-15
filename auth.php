@@ -13,7 +13,7 @@
     }
 
     $db = get_PDO_connection();
-    $query = "SELECT Matricola, Nome, Cognome, Data_nascita, Tipo FROM utente WHERE Matricola = ? AND Password = ?";
+    $query = "SELECT Matricola, Nome, Cognome, Data_nascita, Tipo, U_Matricola FROM utente WHERE Matricola = ? AND Password = ?";
     
     $result = $db->prepare($query);
     $result->execute([$user, $password]);
@@ -30,7 +30,7 @@
         if(check_role('student')){
             $born_date = new DateTime($row[3]);
             $today = new DateTime('now');
-            
+
             $age = $today->diff($born_date);
 
             if(intval($age->format("%y")) >= 18)
@@ -38,6 +38,9 @@
             else
                 $_SESSION['adult'] = false;
         }
+        else if(check_role('parent'))
+            $_SESSION['son'] = $row[5];
+        
         header("Location: index.php");
     }
 ?>
