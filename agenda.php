@@ -6,7 +6,8 @@
     function assenza_diag($id='', $date='', $motiv='', $state=''){
         if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
         
-        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
+        $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
         $formAction = "/updateAssenza.php";
 
@@ -36,11 +37,15 @@
                     <label for="m">Rifiuta</label><br>'
                     : '';
         
-        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
-                    :
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                    <input type="submit" value="Invia" class="btn btn-primary">';
+        $footer = $state == "In attesa" && !check_role("admin") ||
+                            check_role('admin') && $state == "Accettato" || 
+                            check_role('admin') && $state == "Rifiutato" || 
+                            $CANUPDATE && $state == "Accettato" || 
+                            !$CANUPDATE ? 
+                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                                :
+                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                                <input type="submit" value="Invia" class="btn btn-primary">';
 
         $diag = '
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
@@ -73,7 +78,8 @@
     function ritardo_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
-        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
+        $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
         $formAction = "/updateRitardo.php";
 
@@ -103,11 +109,15 @@
                     <label for="m">Rifiuta</label><br>'
                     : '';
         
-        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
-                    :
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                    <input type="submit" value="Invia" class="btn btn-primary">';
+        $footer = $state == "In attesa" && !check_role("admin") ||
+                    check_role('admin') && $state == "Accettato" || 
+                    check_role('admin') && $state == "Rifiutato" || 
+                    $CANUPDATE && $state == "Accettato" || 
+                    !$CANUPDATE ? 
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                        :
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <input type="submit" value="Invia" class="btn btn-primary">';
 
         $diag = '
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
@@ -142,7 +152,8 @@
 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
-        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
+        $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
         $formAction = "/updateUscita.php";
 
@@ -159,9 +170,9 @@
         // Richiesta Uscita Anticipata
         $body .= '
                     <label for="date">Data</label><br>
-                    <input type="date" id="date" name="date" required ' . $READONLY . '><br>
+                    <input type="date" id="date" name="date" value="' . $date . '" required ' . $READONLY . '><br>
                     <label for="hour">Ora</label><br>
-                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required ' . $READONLY . '><br>';
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" value="' . $hour . '" required ' . $READONLY . '><br>';
         
         // Id Evento
         $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>';
@@ -179,11 +190,15 @@
                     <label for="m">Rifiuta</label><br>'
                     : '';
         
-        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
-                    :
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                    <input type="submit" value="Invia" class="btn btn-primary">';
+        $footer = $state == "In attesa" && !check_role("admin") ||
+                    check_role('admin') && $state == "Accettato" || 
+                    check_role('admin') && $state == "Rifiutato" || 
+                    $CANUPDATE && $state == "Accettato" || 
+                    !$CANUPDATE ? 
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                        :
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <input type="submit" value="Invia" class="btn btn-primary">';
 
         $diag = '
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
@@ -260,7 +275,6 @@
                         </div>
                         <div class="modal-body">
                             ' . $body . '
-                            ' . $approve . '
                         </div>
                         <div class="modal-footer">
                         ' . $footer . '
@@ -272,91 +286,7 @@
         return $diag;
     }
 
-    //Remove
-    function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date='', $hour='', $motiv='', $state=''){ 
-        $MIN_H = '8:00';
-        $MAX_H = '16:00';
-        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
-
-        //if(!is_bool($eLate) || !is_bool($isReq)) error("PHP_bad_diag_params_type");
-        //if($isReq && $eLate || $isReq && $motiv != '') error("PHP_diag_params_conflict");
-        //if($eLate && $date == null || $eLate && $hour == null || !$eLate && !$isReq && $date == null) error("PHP_insufficient_diag_params");
-
-        $modalName = $isReq ? "reqModal" : $id . "Modal";
-
-        $btnText = $isReq || $eReq ? "Richiedi" : "Apri";
-        $title = $isReq || $eReq ? "Richiesta di Uscita Anticipata" : "Evento";
-        $req_text = $eReq ? "<br><p>del <b>" . $date . "</b> alle ore <b>" . $hour . "</b></p>" : "";
-
-                // Text before form
-        $body = $eLate ? '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b>' : ($isReq || $eReq ? '<p>Richiesta di Uscita Anticipata</p>' . $req_text : '<p>Assenza del: <b>' . $date . '</b></p>');
-        $body .= '<br>';
-
-        $body .= $isReq ?
-                // Richiesta Uscita Anticipata
-                '
-                    <label for="date">Data</label><br>
-                    <input type="date" id="date" name="date" required ' . $READONLY . '><br>
-                    <label for="hour">Ora</label><br>
-                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required ' . $READONLY . '><br>'
-                : 
-                // Assenza || Ritardo
-                '
-                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
-
-                // Motivazione
-        $body .= '
-                <label for="motivation">Motivazione</label><br>
-                <input type="text" id="motivation" name="motivation" value=' . $motiv . ' required ' . $READONLY . '><br>';
-        
-        $approve = check_role('admin') && $state == "In attesa" ?
-                    '<br>
-                    <input type="radio" id="approve" name="m" value="a">
-                    <label for="m">Accetta</label><br>
-                    <input type="radio" id="deny" name="m" value="d">
-                    <label for="m">Rifiuta</label><br>'
-                    : '';
-        
-        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
-                    :
-                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                    <input type="submit" value="Invia" class="btn btn-primary">';
-
-        $diag = '
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
-                ' . $btnText . '
-            </button>            
-            <form method="POST" action="/updateAssenza.php">
-                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-body">
-                            ' . $body . '
-                            ' . $approve . '
-                        </div>
-                        <div class="modal-footer">
-                        ' . $footer . '
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </form>';
-        return $diag;
-    }
-
-    function eventTable($section='', $events=[], $canUpdate=false){
-        // aggiungere controlli
-        $eLate = false;
-        $isReq = false;
-        if ($section == 'r') $eLate = true;
-
+    function eventTable($section='', $events=[]){
         $table = "<table>";
 
         $tableHeaders = "<tr>
@@ -367,27 +297,83 @@
 
         $table .= $tableHeaders;
 
-        $eventH = "";
+        foreach($events as $record){
+            $table .= "<tr>";
+            $table .= "<td>" . $record['Id'] . "</td>";
+            $table .= "<td>" . $record['Stato'] . "</td>";
+            $table .= "<td>" . $record['Data'] . "</td>";
+
+            $table .= "<td>";
+            $table .= $section == 'r' ? $record['Ora_entrata'] : ($section == 'u' ? $record['Ora_uscita'] : '');
+            $table .= "</td>";
+
+            $table .= "<td>" . $record['Motivazione'] . "</td>";
+
+            if($section == 'a'){
+                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Assenza";
+            }
+            else if($section == 'r'){
+                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Ritardo";
+            }
+            else if($section == 'u'){
+                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Uscita";
+            }
+            else
+                error("invalid_section_on_etbl_creation");
+            
+            if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
+
+            $table .= "</tr>";
+        }
+        $table .= "</table>";
+
+        return $table;
+    }
+
+    //change
+    function studentTable($section='', $events=[]){
+        $table = "<table>";
+
+        $tableHeaders = "<tr>
+                    <th>Id</th><th>Stato</th><th>Data</th>";
+        $tableHeaders .= $section == 'r' ? '<th>Ora Entrata</th>' : ($section == 'u' ? "<th>Ora Uscita</th>" : '');
+
+        $tableHeaders .= "<th>Motivazione</th></tr>";
+
+        $table .= $tableHeaders;
 
         foreach($events as $record){
             $table .= "<tr>";
             $table .= "<td>" . $record['Id'] . "</td>";
             $table .= "<td>" . $record['Stato'] . "</td>";
             $table .= "<td>" . $record['Data'] . "</td>";
-            
-            if($section == 'r'){
-                $eventH = $record['Ora_entrata'];
-            }
-            if($section == 'u'){
-                $eventH = $record['Ora_escita'];
-            }
 
-            $table .= $eventH;
+            $table .= "<td>";
+            $table .= $section == 'r' ? $record['Ora_entrata'] : ($section == 'u' ? $record['Ora_uscita'] : '');
+            $table .= "</td>";
 
             $table .= "<td>" . $record['Motivazione'] . "</td>";
 
-            $table .= $canUpdate ? "<td>" . diag($record['Id'], $eLate, $isReq, $record['Data'], $eventH, $record['Motivazione'], $record['Stato']) . "</td>" : '';
-// aggiungere tasto rimuovi
+            if($section == 'a'){
+                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Assenza";
+            }
+            else if($section == 'r'){
+                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Ritardo";
+            }
+            else if($section == 'u'){
+                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $updateLink = "Uscita";
+            }
+            else
+                error("invalid_section_on_etbl_creation");
+            
+            if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
+
             $table .= "</tr>";
         }
         $table .= "</table>";
@@ -417,7 +403,6 @@
             print_header();
             
             $isAdmin = check_role('admin');
-            $canUpdate = $_SESSION['adult'] || check_role('parent');
             $student = $isAdmin ? null : (check_role('parent') ? $_SESSION['son'] : $_SESSION['user']);
 
             $db = get_PDO_connection();
@@ -439,7 +424,7 @@
 
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
-                            echo eventTable($section, $events, $canUpdate);
+                            echo eventTable($section, $events);
                         }
                         else
                             echo "<p>Non ci sono Assenze</p>";
@@ -458,7 +443,7 @@
                         
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
-                            echo eventTable($section, $events, $canUpdate);
+                            echo eventTable($section, $events);
                         }
                         else
                             echo "<p>Non ci sono Ritardi</p>";
@@ -477,7 +462,7 @@
 
                         if($stm->rowCount() > 0){
                             $events = $stm->fetchAll();
-                            echo eventTable($section, $events, $canUpdate);
+                            echo eventTable($section, $events);
                         }
                         else
                             echo "<p>Non ci sono Richieste di Uscita Anticipata</p>";
