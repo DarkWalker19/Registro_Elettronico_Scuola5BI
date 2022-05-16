@@ -3,6 +3,276 @@
 
     is_user_logged();
 
+    function assenza_diag($id='', $date='', $motiv='', $state=''){
+        if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
+        
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+
+        $formAction = "/updateAssenza.php";
+
+        $modalName = $id . "Modal";
+
+        $btnText = "Apri";
+        $title = "Assenza";
+        
+        // Text before form
+        $body = '<p>Assenza del: <b>' . $date . '</b></p>';
+        $body .= '<br>';
+
+        // Id Evento
+        $body .= '
+                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+
+        // Motivazione
+        $body .= '
+                <label for="motivation">Motivazione</label><br>
+                <textarea cols="50" rows="4" id="motivation" name="motivation" required ' . $READONLY . '>' . $motiv . '</textarea><br>';
+        
+        $approve = check_role('admin') && $state == "In attesa" ?
+                    '<br>
+                    <input type="radio" id="approve" name="m" value="a">
+                    <label for="m">Accetta</label><br>
+                    <input type="radio" id="deny" name="m" value="d">
+                    <label for="m">Rifiuta</label><br>'
+                    : '';
+        
+        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                    :
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+            <form method="POST" action="' . $formAction . '">
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $body . '
+                            ' . $approve . '
+                        </div>
+                        <div class="modal-footer">
+                        ' . $footer . '
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>';
+        return $diag;
+    }
+
+    function ritardo_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
+        if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
+
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+
+        $formAction = "/updateRitardo.php";
+
+        $modalName = $id . "Modal";
+
+        $btnText = "Apri";
+        $title = "Ritardo";
+
+        // Text before form
+        $body = '<p>Entrata alle: <b>' . $hour . '</b> del <b>' . $date . '</b></p>';
+        $body .= '<br>';
+
+        // Id Evento
+        $body .= '
+                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+
+        // Motivazione
+        $body .= '
+                <label for="motivation">Motivazione</label><br>
+                <textarea cols="50" rows="4" id="motivation" name="motivation" required ' . $READONLY . '>' . $motiv . '</textarea><br>';
+        
+        $approve = check_role('admin') && $state == "In attesa" ?
+                    '<br>
+                    <input type="radio" id="approve" name="m" value="a">
+                    <label for="m">Accetta</label><br>
+                    <input type="radio" id="deny" name="m" value="d">
+                    <label for="m">Rifiuta</label><br>'
+                    : '';
+        
+        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                    :
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+            <form method="POST" action="' . $formAction . '">
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $body . '
+                            ' . $approve . '
+                        </div>
+                        <div class="modal-footer">
+                        ' . $footer . '
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>';
+        return $diag;
+    }
+
+    function uscita_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
+        if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
+
+        $MIN_H = '8:00';
+        $MAX_H = '16:00';
+        $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "" : "readonly";
+
+        $formAction = "/updateUscita.php";
+
+        $modalName = $id . "Modal";
+
+        $btnText = "Apri";
+        $title = "Uscita Anticipata";
+        $req_text = "";
+
+        // Text before form
+        $body = '<p>Richiesta di Uscita Anticipata</p>' . $req_text;
+        $body .= '<br>';
+
+        // Richiesta Uscita Anticipata
+        $body .= '
+                    <label for="date">Data</label><br>
+                    <input type="date" id="date" name="date" required ' . $READONLY . '><br>
+                    <label for="hour">Ora</label><br>
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required ' . $READONLY . '><br>';
+        
+        // Id Evento
+        $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>';
+
+        // Motivazione
+        $body .= '
+                <label for="motivation">Motivazione</label><br>
+                <textarea cols="50" rows="4" id="motivation" name="motivation" required ' . $READONLY . '>' . $motiv . '</textarea><br>';
+        
+        $approve = check_role('admin') && $state == "In attesa" ?
+                    '<br>
+                    <input type="radio" id="approve" name="m" value="a">
+                    <label for="m">Accetta</label><br>
+                    <input type="radio" id="deny" name="m" value="d">
+                    <label for="m">Rifiuta</label><br>'
+                    : '';
+        
+        $footer = $state == "In attesa" && !check_role("admin") || check_role('admin') && $state == "Accettato" || $state == "Rifiutato" ? 
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
+                    :
+                    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+            <form method="POST" action="' . $formAction . '">
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $body . '
+                            ' . $approve . '
+                        </div>
+                        <div class="modal-footer">
+                        ' . $footer . '
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>';
+        return $diag;
+    }
+
+    function req_uscita_diag(){ 
+        $MIN_H = '8:00';
+        $MAX_H = '16:00';
+
+        $formAction = "/addUscita.php";
+
+        $modalName = "reqModal";
+
+        $btnText = "Richiedi";
+        $title = "Uscita Anticipata";
+
+        // Text before form
+        $body = '<p>Richiesta di Uscita Anticipata</p>';
+        $body .= '<br>';
+
+        // Richiesta Uscita Anticipata
+        $body .= '
+                    <label for="date">Data</label><br>
+                    <input type="date" id="date" name="date" required><br>
+                    <label for="hour">Ora</label><br>
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>';
+
+        // Motivazione
+        $body .= '
+                <label for="motivation">Motivazione</label><br>
+                <textarea cols="50" rows="4" id="motivation" name="motivation" required></textarea><br>';
+        
+        $footer = '
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+            <form method="POST" action="' . $formAction . '">
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $body . '
+                            ' . $approve . '
+                        </div>
+                        <div class="modal-footer">
+                        ' . $footer . '
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>';
+        return $diag;
+    }
+
+    //Remove
     function diag($id='', $eLate=false, $eReq=false, $isReq=false, $date='', $hour='', $motiv='', $state=''){ 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
