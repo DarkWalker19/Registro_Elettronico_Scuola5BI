@@ -40,6 +40,7 @@
         $footer = $state == "In attesa" && !check_role("admin") ||
                             check_role('admin') && $state == "Accettato" || 
                             check_role('admin') && $state == "Rifiutato" || 
+                            check_role('admin') && $state == "Da giustificare" || 
                             $CANUPDATE && $state == "Accettato" || 
                             !$CANUPDATE ? 
                                 '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
@@ -112,6 +113,7 @@
         $footer = $state == "In attesa" && !check_role("admin") ||
                     check_role('admin') && $state == "Accettato" || 
                     check_role('admin') && $state == "Rifiutato" || 
+                    check_role('admin') && $state == "Da giustificare" ||
                     $CANUPDATE && $state == "Accettato" || 
                     !$CANUPDATE ? 
                         '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
@@ -193,6 +195,7 @@
         $footer = $state == "In attesa" && !check_role("admin") ||
                     check_role('admin') && $state == "Accettato" || 
                     check_role('admin') && $state == "Rifiutato" || 
+                    check_role('admin') && $state == "Da giustificare" ||
                     $CANUPDATE && $state == "Accettato" || 
                     !$CANUPDATE ? 
                         '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
@@ -225,6 +228,42 @@
                     </div>
                 </div>
             </form>';
+        return $diag;
+    }
+
+    //make another diag with forms
+    function state_diag($mat='', $state=''){
+        if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
+
+        $modalName = "stateModal";
+
+        $btnText = $state;
+        $title = "Stato";
+        
+        $footer = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>';
+
+        $diag = '
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
+                ' . $btnText . '
+            </button>            
+                <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="' . $modalName . 'Label">' . $title . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                        </div>
+                        <div class="modal-footer">
+                        ' . $footer . '
+                        </div>
+                    </div>
+                    </div>
+                </div>';
         return $diag;
     }
 // aggiungere limite min x data e fixare orario
@@ -290,8 +329,9 @@
         $table = "<table>";
 
         $tableHeaders = "<tr>
-                    <th>Id</th><th>Stato</th><th>Data</th>";
+                    <th>Id</th><th>Tipo</th><th>Stato</th><th>Data</th>";
         $tableHeaders .= $section == 'r' ? '<th>Ora Entrata</th>' : ($section == 'u' ? "<th>Ora Uscita</th>" : '');
+        if($section == '') $tableHeaders .= '<th>Ora Entrata</th><th>Ora Uscita</th>';
 
         $tableHeaders .= "<th>Motivazione</th></tr>";
 
@@ -300,29 +340,36 @@
         foreach($events as $record){
             $table .= "<tr>";
             $table .= "<td><p>" . $record['Id'] . "</p></td>";
+            $table .= "<td><p>" . $record['Tipo'] . "</p></td>";
             $table .= "<td><p>" . $record['Stato'] . "</p></td>";
             $table .= "<td><p>" . $record['Data'] . "</p></td>";
 
-            $table .= "<td><p>";
-            $table .= $section == 'r' ? $record['Ora_entrata'] : ($section == 'u' ? $record['Ora_uscita'] : '');
-            $table .= "</p></td>";
+            if($section == 'a' || $section == '' && $record['Tipo'] == "Assenza"){
+                if($section == '') $table .= "<td></td><td></td>";
 
-            $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-
-            if($section == 'a'){
+                $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
                 $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
+
                 $updateLink = "Assenza";
             }
-            else if($section == 'r'){
+            else if($section == 'r' || $section == '' && $record['Tipo'] == "Ritardo"){
+                $table .= "<td><p>" . $record['Ora_entrata'] . "</p></td>";
+                if($section == '') $table .= "<td></td>";
+
+                $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
                 $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato']) . "</td>";
+                
                 $updateLink = "Ritardo";
             }
-            else if($section == 'u'){
+            else if($section == 'u' || $section == '' && $record['Tipo'] == "Uscita"){
+                if($section == '') $table .= "<td></td>";
+                $table .= "<td><p>" . $record['Ora_uscita'] . "</p></td>";
+
+                $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
                 $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato']) . "</td>";
+
                 $updateLink = "Uscita";
             }
-            else
-                error("invalid_section_on_etbl_creation");
 
             if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
 
@@ -333,7 +380,7 @@
         return $table;
     }
 
-    function studentTable($section='', $records=[], $states=[]){
+    function studentClassTable($section='', $records=[]){
         $table = "<table>";
 
         if($section == 's')
@@ -483,27 +530,26 @@
                             $qry = 'SELECT Matricola, Nome, Cognome FROM appartenere AS a 
                                     INNER JOIN classe AS c ON (c.Id = a.C_Id) 
                                     INNER JOIN utente AS u ON (u.Matricola = a.U_Matricola)
-                                    WHERE (C_Id = ? AND u.Tipo = "student")';
+                                    WHERE C_Id = ? AND u.Tipo = "student"';
                             $stm = $db->prepare($qry);
                             $stm->execute([$_GET['class']]);
 
                             if($stm->rowCount() > 0){
                                 $records = $stm->fetchAll();
-                                echo studentTable('s', $records);
+                                echo studentClassTable('s', $records);
                             }
                             else
                                 echo "<p>Non ci sono studenti appartenenti a questa classe</p>";
                                 //error('class_not_bounded_to_user');
                         }
                         else{
-
                             $qry = 'SELECT * FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = ?';
                             $stm = $db->prepare($qry);
                             $stm->execute([$_SESSION['user']]);
 
                             if($stm->rowCount() > 0){
                                 $records = $stm->fetchAll();
-                                echo studentTable('c', $records);
+                                echo studentClassTable('c', $records);
                             }
                             else
                                 echo "<p>Non appartieni a nessuna Classe</p>";
@@ -513,7 +559,24 @@
                         //aggiungere controlli per focussare la ricerca
 
                         break;
+
                         // creare sezione s per vis eventi stud
+                    case 's':
+                        //if(!isset($_GET['mat'])) error("matricola_not_provided");
+
+                        $qry = $qry = 'SELECT * FROM evento WHERE U_Matricola = ?';
+                        $stm = $db->prepare($qry);
+                        $stm->execute([$_GET['mat']]);
+                        
+                        if($stm->rowCount() > 0){
+                            $records = $stm->fetchAll();
+                            echo eventTable('', $records);
+                        }
+                        else
+                            echo "<p>Non esistono eventi per questo utente</p>";
+
+                        break;
+
                     default:
                         error("bad_section");
                         break;
