@@ -3,44 +3,61 @@
 
     is_user_logged();
 	
-	if(!isset($_POST['id']) || !isset($_POST['date']) || !isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
+	if(!isset($_POST['id']) || !isset($_POST['motivation'])) error("invalid_form");
 	
 	$mode = $_POST['mode'];
 	$id = $_POST['id'];
-	$date = $_POST['date'];
-	$hour = $_POST['hour'];
 	$motivation = $_POST['motivation'];
 	
 	switch($mode){
 		case 'm': //motivate
-		$query = "UPDATE Evento SET Motivazione = '$motivation' WHERE (Id = '$id')";
+			if($_SESSION['old'] || check_role['parent']{
+				$query = "UPDATE Evento SET Motivazione = ?, Stato = 'In attesa' WHERE (Id = ?)";
+				$array = [$motivation, $id];
+			}else{
+				error("insufficient_permission");
+			}
+			
 		break;
+		
 		
 		case 'r': //remove
-		$query = "DELETE FROM Evento WHERE (Id = '$id')";
+			if(check_role('admin')){
+				$query = "DELETE FROM Evento WHERE (Id = ?)";
+				$array = [$id];
+			}else{
+				error("insufficient_permission");
+			}
 		break;
+		
 		
 		case 'a': //approve
-		$query = "UPDATE Evento SET  Stato = '$state' WHERE (Id = '$id')"; //da sistemare
+			if(check_role('admin')){
+				$query = "UPDATE Evento SET  Stato = 'Giustificato' WHERE (Id = ?)"; //da sistemare
+				$array = [$id];
+			}else{
+				error("insufficient_permission");
+			}
 		break;
 		
+		
 		case 'd': //deny
-		//da fare
+			if(check_role('admin')){
+				$query = "UPDATE Evento SET Stato = 'Rifiutato' WHERE (Id = ?)";//da fare
+				$array = [$id];
+			}else{
+				error("insufficient_permission");
+			}
 		break;
 	}
-	
-	/*if(!check_role("admin")){
-		$state = "In attesa";
-	}else{
-		$state = "Giustificato";
-	}*/
-	
+		
 	$db = get_PDO_connection();
 	
-	//$query = "UPDATE Evento SET Motivazione = $motivation, Stato = $state WHERE (Id = $id)";
-	
-	$result = $db->prepare($query);
-    $result->execute([$id, $date, $motivation]);
-
-    
+	try{
+		$result = $db->prepare($query);
+		$result->execute($array);
+	}catch(PDOException $e){
+		error("PDO_Query_Exception");
+	}
+	 
 	?>
