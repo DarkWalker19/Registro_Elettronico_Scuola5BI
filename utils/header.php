@@ -2,7 +2,6 @@
     require_once "utils.php";
 ?>
 
-<!DOCTYPE html>
 <html>
     <head>
     </head>
