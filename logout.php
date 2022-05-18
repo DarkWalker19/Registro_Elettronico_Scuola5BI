@@ -1,6 +1,7 @@
 <?php
 	require_once "utils/utils.php";
     session_destroy();
+    $_SESSION = null;
 ?>
 <html>
     <head>

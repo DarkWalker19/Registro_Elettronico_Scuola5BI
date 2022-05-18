@@ -11,7 +11,7 @@
 	
 	switch($mode){
 		case 'm': //motivate
-			if($_SESSION['old'] || check_role['parent']{
+			if($_SESSION['adult'] || check_role('parent')){
 				$query = "UPDATE Evento SET Motivazione = ?, Stato = 'In attesa' WHERE (Id = ?)";
 				$array = [$motivation, $id];
 			}else{

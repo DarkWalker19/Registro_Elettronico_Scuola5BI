@@ -227,7 +227,7 @@
             </form>';
         return $diag;
     }
-
+// aggiungere limite min x data e fixare orario
     function req_uscita_diag(){ 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
@@ -299,15 +299,15 @@
 
         foreach($events as $record){
             $table .= "<tr>";
-            $table .= "<td>" . $record['Id'] . "</td>";
-            $table .= "<td>" . $record['Stato'] . "</td>";
-            $table .= "<td>" . $record['Data'] . "</td>";
+            $table .= "<td><p>" . $record['Id'] . "</p></td>";
+            $table .= "<td><p>" . $record['Stato'] . "</p></td>";
+            $table .= "<td><p>" . $record['Data'] . "</p></td>";
 
-            $table .= "<td>";
+            $table .= "<td><p>";
             $table .= $section == 'r' ? $record['Ora_entrata'] : ($section == 'u' ? $record['Ora_uscita'] : '');
-            $table .= "</td>";
+            $table .= "</p></td>";
 
-            $table .= "<td>" . $record['Motivazione'] . "</td>";
+            $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
 
             if($section == 'a'){
                 $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
@@ -323,7 +323,7 @@
             }
             else
                 error("invalid_section_on_etbl_creation");
-            
+
             if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
 
             $table .= "</tr>";
@@ -333,47 +333,50 @@
         return $table;
     }
 
-    //change
-    function studentTable($section='', $events=[]){
+    function studentTable($section='', $records=[], $states=[]){
         $table = "<table>";
 
-        $tableHeaders = "<tr>
-                    <th>Id</th><th>Stato</th><th>Data</th>";
-        $tableHeaders .= $section == 'r' ? '<th>Ora Entrata</th>' : ($section == 'u' ? "<th>Ora Uscita</th>" : '');
-
-        $tableHeaders .= "<th>Motivazione</th></tr>";
+        if($section == 's')
+            $tableHeaders = "<tr><th>Num</th><th>Nome</th><th>Cognome</th><th>Stato</th></tr>";
+        else if($section == 'c')
+            $tableHeaders = "<tr><th>Classe</th></tr>";
+        else
+            error("bad_section_studentTable");
 
         $table .= $tableHeaders;
 
-        foreach($events as $record){
+        $counter = 1;
+        foreach($records as $record){
             $table .= "<tr>";
-            $table .= "<td>" . $record['Id'] . "</td>";
-            $table .= "<td>" . $record['Stato'] . "</td>";
-            $table .= "<td>" . $record['Data'] . "</td>";
 
-            $table .= "<td>";
-            $table .= $section == 'r' ? $record['Ora_entrata'] : ($section == 'u' ? $record['Ora_uscita'] : '');
-            $table .= "</td>";
+            if($section == 's'){
 
-            $table .= "<td>" . $record['Motivazione'] . "</td>";
+                $qry = 'SELECT Id, Tipo FROM evento AS e 
+                        WHERE (U_Matricola = ? AND e.Data = CURDATE())';
+                
+                $db = get_PDO_connection();
+                $stm = $db->prepare($qry);
+                $stm->execute([$record['Matricola']]);
 
-            if($section == 'a'){
-                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
-                $updateLink = "Assenza";
-            }
-            else if($section == 'r'){
-                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato']) . "</td>";
-                $updateLink = "Ritardo";
-            }
-            else if($section == 'u'){
-                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato']) . "</td>";
-                $updateLink = "Uscita";
+                if($stm->rowCount() > 0)
+                    $event = $stm->fetch();
+                else
+                    $event = null;
+
+                $table .= "<td><p>" . $counter . "</p></td>";
+                $table .= "<td><p>" . $record['Nome'] . "</p></td>";
+                $table .= "<td><p>" . $record['Cognome'] . "</p></td>";
+                $state = isset($event) ? $event['Tipo'] : "Presenza";
+                $table .= "<td><p>" . $state . "</p></td>";
+
+                // aggiungere stato cliccabile con diag/selezione stato
+                $table .= "<td><button onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
+                // view degli eventi dello studente
+                $counter++;
             }
             else
-                error("invalid_section_on_etbl_creation");
-            
-            if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
-
+                $table .= "<td><p onclick='window.location.href = \"?section=c&class=" . $record['Id'] . "\"'>" . $record['Anno'] . $record['Sezione'] . "</p></td>";
+        
             $table .= "</tr>";
         }
         $table .= "</table>";
@@ -456,6 +459,9 @@
 
                         echo "<h1>Richieste di Uscita Anticipata</h1>";
 
+                        if($_SESSION['adult']||check_role('parent'))
+                            echo req_uscita_diag();
+
                         $qry = 'SELECT * FROM evento WHERE Tipo = "Uscita" AND U_Matricola = ?';
                         $stm = $db->prepare($qry);
                         $stm->execute([$student]);
@@ -474,27 +480,30 @@
                         is_user_admin();
 
                         if(isset($_GET['class'])){
-                            $qry = 'SELECT * FROM appartenere WHERE U_Matricola = ? AND C_Id = ?';
+                            $qry = 'SELECT Matricola, Nome, Cognome FROM appartenere AS a 
+                                    INNER JOIN classe AS c ON (c.Id = a.C_Id) 
+                                    INNER JOIN utente AS u ON (u.Matricola = a.U_Matricola)
+                                    WHERE (C_Id = ? AND u.Tipo = "student")';
                             $stm = $db->prepare($qry);
-                            $stm->execute([$_SESSION['user'], $_GET['class']]);
+                            $stm->execute([$_GET['class']]);
 
                             if($stm->rowCount() > 0){
-                                $events = $stm->fetchAll();
-                                echo $_GET['class'];
-                                //echo eventTable($section, $events, $canUpdate);
+                                $records = $stm->fetchAll();
+                                echo studentTable('s', $records);
                             }
                             else
-                                error('class_not_belong_to_user');
+                                echo "<p>Non ci sono studenti appartenenti a questa classe</p>";
+                                //error('class_not_bounded_to_user');
                         }
                         else{
-                            $qry = 'SELECT Anno, Sezione FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = "?"';
+
+                            $qry = 'SELECT * FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = ?';
                             $stm = $db->prepare($qry);
                             $stm->execute([$_SESSION['user']]);
 
                             if($stm->rowCount() > 0){
-                                $events = $stm->fetchAll();
-                                echo "tante classi";
-                                //echo eventTable($section, $events, $canUpdate);
+                                $records = $stm->fetchAll();
+                                echo studentTable('c', $records);
                             }
                             else
                                 echo "<p>Non appartieni a nessuna Classe</p>";
@@ -504,7 +513,7 @@
                         //aggiungere controlli per focussare la ricerca
 
                         break;
-        
+                        // creare sezione s per vis eventi stud
                     default:
                         error("bad_section");
                         break;

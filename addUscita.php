@@ -3,7 +3,7 @@
 
     is_user_logged();
 
-	if(check_role("parent")||$_SESSION['old']){
+	if(check_role("parent")||$_SESSION['adult']){
 	
 		if(!isset($_POST['date']) || !isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
 
