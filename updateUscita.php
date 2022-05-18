@@ -16,9 +16,8 @@
 				$array = [$motivation, $id];
 			}else{
 				error("insufficient_permission");
-			}
-			
-		break;
+			}	
+			break;
 		
 		
 		case 'r': //remove
@@ -28,27 +27,27 @@
 			}else{
 				error("insufficient_permission");
 			}
-		break;
+			break;
 		
 		
 		case 'a': //approve
 			if(check_role('admin')){
-				$query = "UPDATE Evento SET  Stato = 'Giustificato' WHERE (Id = ?)"; //da sistemare
+				$query = "UPDATE Evento SET Stato = 'Giustificato' WHERE (Id = ?)";
 				$array = [$id];
 			}else{
 				error("insufficient_permission");
 			}
-		break;
+			break;
 		
 		
 		case 'd': //deny
 			if(check_role('admin')){
-				$query = "UPDATE Evento SET Stato = 'Rifiutato' WHERE (Id = ?)";//da fare
+				$query = "UPDATE Evento SET Stato = 'Rifiutato' WHERE (Id = ?)";
 				$array = [$id];
 			}else{
 				error("insufficient_permission");
 			}
-		break;
+			break;
 	}
 		
 	$db = get_PDO_connection();
