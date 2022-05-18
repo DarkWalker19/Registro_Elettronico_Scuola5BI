@@ -1,8 +1,7 @@
 <?php
-    require "utils/utils.php";
+    require_once "utils/utils.php";
 
     is_user_logged();
-	
 	
 	if(!isset($_POST['id']) || !isset($_POST['date']) || !isset($_POST['motivation'])) error("invalid");
 	

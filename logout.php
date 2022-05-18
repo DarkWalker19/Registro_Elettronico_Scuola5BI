@@ -15,7 +15,7 @@
             print_header();
         ?>
 		<p>Hai fatto logout correttamente</p>
-		<p>Torna alla <button onclick="location.href='index.php'" type="button" class="backButton">Home</button></p>
+		<p>Torna alla <button onclick="location.href='index.php'" type="button" class="btn btn-primary">Home</button></p>
         <?php
             print_footer();
         ?>
