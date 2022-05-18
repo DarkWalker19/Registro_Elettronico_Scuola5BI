@@ -48,7 +48,7 @@
                     <h6 class="text-uppercase fw-bold mb-4">
                         Link utili
                     </h6>
-                    <p onclick="location.href = 'https://www.itiscardanopv.edu.it/';">
+                    <p style="color: blue; cursor: pointer" onclick="location.href = 'https://www.itiscardanopv.edu.it/';">
                         Itis G. Cardano
                     </p>
                 </div>
