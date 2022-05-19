@@ -97,8 +97,36 @@
 		
 		case 'a': //approve
 			if(check_role('admin')){
-				$query = "UPDATE Evento SET  Stato = 'Giustificato' WHERE (Id = ?)";
-				$array = [$id];
+				//prende la classe di appartenenza dell'admin
+				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$result = $db->prepare($query);
+				$result->execute($_SESSION['user']);
+
+				$row = $result->fetch();
+				$adminClass = $row['C_Id'];
+
+				//prende la matricola dello studente proprietario dell'evento
+				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
+				$result = $db->prepare($query);
+				$result->execute($id);
+
+				$row = $result->fetch();
+				$studentNumb = $row['U_Matricola'];
+
+				//prende la classe dello studente
+				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$result = $db->prepare($query);
+				$result->execute($_SESSION['user']);
+
+				$row = $result->fetch();
+				$studentClass = $row['C_Id'];
+
+				if($adminClass == $studentClass){
+					$query = "UPDATE Evento SET  Stato = 'Giustificato' WHERE (Id = ?)";
+					$array = [$id];
+				}else{
+					error("not_same_class");
+				}
 			}else{
 				error("insufficient_permission");
 			}
@@ -106,8 +134,36 @@
 		
 		case 'd': //deny
 			if(check_role('admin')){
-				$query = "UPDATE Evento SET Stato = 'Rifiutato' WHERE (Id = ?)";
-				$array = [$id];
+				//prende la classe di appartenenza dell'admin
+				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$result = $db->prepare($query);
+				$result->execute($_SESSION['user']);
+
+				$row = $result->fetch();
+				$adminClass = $row['C_Id'];
+
+				//prende la matricola dello studente proprietario dell'evento
+				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
+				$result = $db->prepare($query);
+				$result->execute($id);
+
+				$row = $result->fetch();
+				$studentNumb = $row['U_Matricola'];
+
+				//prende la classe dello studente
+				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$result = $db->prepare($query);
+				$result->execute($_SESSION['user']);
+
+				$row = $result->fetch();
+				$studentClass = $row['C_Id'];
+
+				if($adminClass == $studentClass){
+					$query = "UPDATE Evento SET Stato = 'Rifiutato' WHERE (Id = ?)";
+					$array = [$id];
+				}else{
+					error("not_same_class");
+				}
 			}else{
 				error("insufficient_permission");
 			}
