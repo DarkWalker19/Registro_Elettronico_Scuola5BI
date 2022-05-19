@@ -83,6 +83,7 @@
 				$row = $result->fetch();
 				$studentClass = $row['C_Id'];
 				
+				//verifica che la classe dell'admin in sessione combaci con quella dello studente proprietario dell'evento
 				if($adminClass == $studentClass){
 					$query = "DELETE FROM Evento WHERE (Id = ?)";
 					$array = [$id];
