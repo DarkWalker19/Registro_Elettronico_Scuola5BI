@@ -4,11 +4,6 @@
 
 <html>
     <head>
-        <style>
-            footer {
-                bottom: 0; position: fixed; width: 100%;
-            }
-        </style>
     </head>
 
     <body>
