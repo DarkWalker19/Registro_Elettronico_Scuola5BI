@@ -5,15 +5,17 @@
 
 	$db = get_PDO_connection();
 	
-	if(!isset($_POST['id']) || !isset($_POST['date']) || !isset($_POST['motivation'])) error("invalid");
+	if(!isset($_POST['id'])) error("invalid");
 	
 	$mode = $_POST['mode'];
 	$id = $_POST['id'];
 	$date = $_POST['data'];
 	$motivation = $_POST['motivazione'];
 	
+
 	switch($mode){
 		case 'm': //motivate
+			if(!isset($_POST['motivation'])) error("invalid");
 			if($_SESSION['adult'] || check_role('parent')){
 				if(check_role('parent')){
 					//prende la matricola dello studente minorenne
@@ -58,6 +60,7 @@
 			break;
 		
 		case 'r': //remove
+			if(!isset($_POST['motivation'])) error("invalid");
 			if(check_role('admin')){
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
@@ -96,6 +99,7 @@
 			break;
 		
 		case 'a': //approve
+			if(!isset($_POST['motivation'])) error("invalid");
 			if(check_role('admin')){
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
@@ -133,6 +137,7 @@
 			break;
 		
 		case 'd': //deny
+			if(!isset($_POST['motivation'])) error("invalid");
 			if(check_role('admin')){
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
