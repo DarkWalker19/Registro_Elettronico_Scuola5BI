@@ -9,7 +9,7 @@
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
         $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
-        $formAction = "/updateAssenza.php";
+        $formAction = "updateAssenza.php";
 
         $modalName = $id . "Modal";
 
@@ -85,7 +85,7 @@
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
         $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
-        $formAction = "/updateRitardo.php";
+        $formAction = "updateRitardo.php";
 
         $modalName = $id . "Modal";
 
@@ -163,7 +163,7 @@
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
         $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
 
-        $formAction = "/updateUscita.php";
+        $formAction = "updateUscita.php";
 
         $modalName = $id . "Modal";
 
@@ -279,7 +279,7 @@
         $MIN_H = '8:00';
         $MAX_H = '16:00';
 
-        $formAction = "/addUscita.php";
+        $formAction = "addUscita.php";
 
         $modalName = "reqModal";
 
