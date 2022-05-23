@@ -158,7 +158,7 @@
     function uscita_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
-        $MIN_H = '8:00';
+        $MIN_H = '08:00';
         $MAX_H = '16:00';
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
         $CANUPDATE = check_role("admin") || check_role("parent") || $_SESSION['adult'];
@@ -241,19 +241,36 @@
     }
 
     function state_diag($mat='', $state=''){
-        if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
+        $MIN_H = '08:00';
+        $MAX_H = '16:00';
 
         $modalName = "stateModal";
 
         $btnText = $state;
         $title = "Stato";
         
-        $footer = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>';
+        $selector = '<br>
+                <label for="select">Evento</label><br>
+                <select name="' . $mat . '" onchange="updateSelect(this.value, this.name)">
+                    <option value="assenza" selected="selected">Assenza</option>
+                    <option value="ritardo">Ritardo</option>
+                </select>
+                <br>';
+
+        $body = '<input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
+        $body .= '<div id="' . $mat . '" style="display: none;">
+                    <label for="hour">Ora</label><br>
+                    <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>
+                </div>';
+
+        $footer = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <input type="submit" value="Invia" class="btn btn-primary">';
 
         $diag = '
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
                 ' . $btnText . '
-            </button>            
+            </button>       
+            <form id="state_' . $mat . '" method="POST" action="addAssenza.php">     
                 <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -264,19 +281,21 @@
                         </button>
                         </div>
                         <div class="modal-body">
-                            
+                            ' . $selector . '
+                            ' . $body . '
                         </div>
                         <div class="modal-footer">
                         ' . $footer . '
                         </div>
                     </div>
                     </div>
-                </div>';
+                </div>
+            </form>';
         return $diag;
     }
     
     function req_uscita_diag(){ 
-        $MIN_H = '8:00';
+        $MIN_H = '08:00';
         $MAX_H = '16:00';
 
         $formAction = "addUscita.php";
@@ -427,12 +446,11 @@
                 $table .= "<td><p>" . $counter . "</p></td>";
                 $table .= "<td><p>" . $record['Nome'] . "</p></td>";
                 $table .= "<td><p>" . $record['Cognome'] . "</p></td>";
-                $state = isset($event) ? $event['Tipo'] : "Presenza";
+                $state = state_diag($record['Matricola'], isset($event) ? $event['Tipo'] : "Presenza");
                 $table .= "<td><p>" . $state . "</p></td>";
 
-                // aggiungere stato cliccabile con diag/selezione stato
-                $table .= "<td><button onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
-                // view degli eventi dello studente
+                $table .= "<td><button class='btn btn-primary' onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
+
                 $counter++;
             }
             else
@@ -452,15 +470,6 @@
             print_metadata();
             get_css();
         ?>
-            <script>
-                let today = '<?php
-                    echo date("Y-m-d");
-                ?>';
-                let datePicker = document.getElementById('date');
-                datePicker.setAttribute("min", today);
-                datePicker.setAttribute("value", today);
-                document.getElementById('hour').setAttribute("value", "08:00");
-            </script>
     </head>
     <body>
         <?php
@@ -598,5 +607,35 @@
             }
             print_footer();
         ?>
+        <script>
+            let today = '<?php
+                echo date("Y-m-d");
+            ?>';
+
+            let dateElements = document.getElementsByName("date");
+            dateElements.forEach(element => {
+                element.min = today;
+                element.value = today;
+            });
+            
+            let hourElements = document.getElementsByName("hour");
+            hourElements.forEach(element => {
+                element.value = "08:00";
+            });
+
+            function updateSelect(s, m){
+                let element = document.getElementById(m);
+                let form = document.getElementById("state_" + m);
+
+                if(s=="ritardo"){
+                    element.style = "";
+                    form.action = "addRitardo.php";
+                }
+                else{
+                    element.style = "display: none;";
+                    form.action = "addAssenza.php";
+                }
+            }
+        </script>
     </body> 
 </html>  
