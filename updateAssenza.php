@@ -24,7 +24,7 @@
 					//prende la matricola dello studente proprietario dell'evento
 					$query = "SELECT U_Matricola FROM evento WHERE Id = ?";
 					$result = $db->prepare($query);
-    				$result->execute($id);
+    				$result->execute([$id]);
     
 					$row = $result->fetch();
 					$eventStudentNumb = $row['U_Matricola'];
@@ -41,7 +41,7 @@
 						//prende la matricola dello studente proprietario dell'evento
 						$query = "SELECT U_Matricola FROM evento WHERE Id = ?";
 						$result = $db->prepare($query);
-						$result->execute($id);
+						$result->execute([$id]);
 		
 						$row = $result->fetch();
 						$eventStudentNumb = $row['U_Matricola'];
@@ -64,7 +64,7 @@
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$adminClass = $row['C_Id'];
@@ -72,7 +72,7 @@
 				//prende la matricola dello studente proprietario dell'evento
 				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
 				$result = $db->prepare($query);
-				$result->execute($id);
+				$result->execute([$id]);
 
 				$row = $result->fetch();
 				$studentNumb = $row['U_Matricola'];
@@ -80,7 +80,7 @@
 				//prende la classe dello studente
 				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$studentClass = $row['C_Id'];
@@ -103,7 +103,7 @@
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$adminClass = $row['C_Id'];
@@ -111,7 +111,7 @@
 				//prende la matricola dello studente proprietario dell'evento
 				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
 				$result = $db->prepare($query);
-				$result->execute($id);
+				$result->execute([$id]);
 
 				$row = $result->fetch();
 				$studentNumb = $row['U_Matricola'];
@@ -119,7 +119,7 @@
 				//prende la classe dello studente
 				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$studentClass = $row['C_Id'];
@@ -141,7 +141,7 @@
 				//prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$adminClass = $row['C_Id'];
@@ -149,7 +149,7 @@
 				//prende la matricola dello studente proprietario dell'evento
 				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
 				$result = $db->prepare($query);
-				$result->execute($id);
+				$result->execute([$id]);
 
 				$row = $result->fetch();
 				$studentNumb = $row['U_Matricola'];
@@ -157,7 +157,7 @@
 				//prende la classe dello studente
 				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
-				$result->execute($_SESSION['user']);
+				$result->execute([$_SESSION['user']]);
 
 				$row = $result->fetch();
 				$studentClass = $row['C_Id'];

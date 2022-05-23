@@ -24,6 +24,9 @@
         $body .= '
                 <input type="hidden" id="id" name="id" value="' . $id . '" required>';
 
+        // Mode m = motivate
+        $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
+
         // Motivazione
         $body .= '
                 <label for="motivation">Motivazione</label><br>
@@ -31,10 +34,10 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="m" value="a">
-                    <label for="m">Accetta</label><br>
-                    <input type="radio" id="deny" name="m" value="d">
-                    <label for="m">Rifiuta</label><br>'
+                    <input type="radio" id="approve" name="mode" value="a">
+                    <label for="mode">Accetta</label><br>
+                    <input type="radio" id="deny" name="mode" value="d">
+                    <label for="mode">Rifiuta</label><br>'
                     : '';
         
         $footer = $state == "In attesa" && !check_role("admin") ||
@@ -97,6 +100,9 @@
         $body .= '
                 <input type="hidden" id="id" name="id" value="' . $id . '" required>';
 
+        // Mode m = motivate
+        $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
+
         // Motivazione
         $body .= '
                 <label for="motivation">Motivazione</label><br>
@@ -104,10 +110,10 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="m" value="a">
-                    <label for="m">Accetta</label><br>
-                    <input type="radio" id="deny" name="m" value="d">
-                    <label for="m">Rifiuta</label><br>'
+                    <input type="radio" id="approve" name="mode" value="a">
+                    <label for="mode">Accetta</label><br>
+                    <input type="radio" id="deny" name="mode" value="d">
+                    <label for="mode">Rifiuta</label><br>'
                     : '';
         
         $footer = $state == "In attesa" && !check_role("admin") ||
@@ -179,6 +185,9 @@
         // Id Evento
         $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>';
 
+        // Mode m = motivate
+        $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
+
         // Motivazione
         $body .= '
                 <label for="motivation">Motivazione</label><br>
@@ -186,10 +195,10 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="m" value="a">
-                    <label for="m">Accetta</label><br>
-                    <input type="radio" id="deny" name="m" value="d">
-                    <label for="m">Rifiuta</label><br>'
+                    <input type="radio" id="approve" name="mode" value="a">
+                    <label for="mode">Accetta</label><br>
+                    <input type="radio" id="deny" name="mode" value="d">
+                    <label for="mode">Rifiuta</label><br>'
                     : '';
         
         $footer = $state == "In attesa" && !check_role("admin") ||
@@ -231,7 +240,6 @@
         return $diag;
     }
 
-    //make another diag with forms
     function state_diag($mat='', $state=''){
         if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
@@ -266,7 +274,7 @@
                 </div>';
         return $diag;
     }
-// aggiungere limite min x data e fixare orario
+    
     function req_uscita_diag(){ 
         $MIN_H = '8:00';
         $MAX_H = '16:00';
@@ -371,7 +379,13 @@
                 $updateLink = "Uscita";
             }
 
-            if(check_role("admin")) $table .= "<td><button onclick=\"location.href='update" . $updateLink . ".php?mode=r&id=" . $record['Id'] . "'\">Rimuovi</button></td>";
+            //Remove event button
+            $table .= check_role("admin") ? '<td><form method="POST" action="update' . $updateLink . '.php" style="display: flex;align-items: center;">
+                                                    <input type="hidden" id="id" name="id" value="' . $record['Id'] . '" required>
+                                                    <input type="hidden" id="remove" name="mode" value="r" required>
+                                                    <input type="submit" value="Rimuovi" class="btn btn-primary">
+                                                </form></td>' 
+            : '';
 
             $table .= "</tr>";
         }
