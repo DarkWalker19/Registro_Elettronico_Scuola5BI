@@ -138,7 +138,7 @@
 			break;
 		
 		case 'd': //deny
-			if(!isset($_POST['date']) || !isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid"); 
+			if(!isset($_POST['motivation'])) error("invalid"); 
 			if(check_role('admin')){
 				/* //prende la classe di appartenenza dell'admin
 				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
