@@ -3,15 +3,14 @@
 
 	is_user_admin();
 
-	if(!isset($_POST['data'])||!isset($_POST['matricola']))
+	if(!isset(!isset($_POST['matricola']))
 		error("invalid");
 
 	$db = get_PDO_connection();
-	$date = $_POST['data'];
 	$numb = $_POST['matricola'];
 
 	$query = "INSERT INTO Evento (Stato, Data, Tipo, U_Matricola)";
-	$query .= "VALUES (4, ?, 1, ?)";
+	$query .= "VALUES (4, CURRDATE(), 1, ?)";
 	
 	try{
 		$result = $db->prepare($query);
