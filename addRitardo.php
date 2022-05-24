@@ -13,7 +13,7 @@
 		$numb = $_POST['matricola'];
 		
 		$query = "INSERT INTO evento (Stato, Data, Ora_entrata, Motivazione, Tipo, U_Matricola)";
-		$query .= "VALUES (4, CURRDATE(), ?, ?, 2, ?);";
+		$query .= "VALUES (4, CURRENT_DATE, ?, ?, 2, ?);";
 		
 		try{
 			$result = $db->prepare($query);
