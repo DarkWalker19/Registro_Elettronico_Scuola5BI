@@ -159,5 +159,11 @@
 			}
 		break;
 	}
-
+	
+	try{
+		$result = $db->prepare($query);
+    	$result->execute($array);
+	}catch(PDOException $e){
+		error("PDO_Query_Exception");
+	}
 ?>
