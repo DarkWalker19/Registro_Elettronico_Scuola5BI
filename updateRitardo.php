@@ -162,4 +162,12 @@
 		error("PDO_Query_Exception");
 	}
 
+	if(check_role("admin")){
+		header("Location: agenda.php?section=s&mat=" . $_POST['matricola']);
+		die();
+	}
+	else{
+		header("Location: agenda.php?section=r");
+		die();
+	}
 ?>

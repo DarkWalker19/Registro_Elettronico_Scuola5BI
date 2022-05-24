@@ -29,4 +29,6 @@
 	}else{
 		error("insufficient_permission");
 	}
+
+	header("Location: agenda.php?section=u");
 ?>
