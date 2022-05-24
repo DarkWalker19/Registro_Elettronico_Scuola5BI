@@ -18,7 +18,7 @@
 
 		try{
 			$result = $db->prepare($query);
-			$result->execute([$date, $hour, $motivation, $numb]);
+			$result->execute([$hour, $motivation, $numb]);
 		}catch(PDOException $e){
 			error("PDO_QUERY_Exception");
 		}
