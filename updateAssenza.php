@@ -65,7 +65,7 @@
 				$studentNumb = $row['U_Matricola'];
 
 				//prende la classe dello studente
-				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -73,7 +73,7 @@
 				$studentClass = $row['C_Id'];
 				
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 			
@@ -90,7 +90,6 @@
 			break;
 		
 		case 'a': //approve
-			if(!isset($_POST['motivation'])) error("invalid");
 			if(check_role('admin')){
 				//prende la matricola dello studente proprietario dell'evento
 				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
@@ -101,7 +100,7 @@
 				$studentNumb = $row['U_Matricola'];
 
 				//prende la classe dello studente
-				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -109,7 +108,7 @@
 				$studentClass = $row['C_Id'];
 				
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 
@@ -125,7 +124,6 @@
 			break;
 		
 		case 'd': //deny
-			if(!isset($_POST['motivation'])) error("invalid");
 			if(check_role('admin')){
 				//prende la matricola dello studente proprietario dell'evento
 				$query = "SELECT U_Matricola FROM evento WHERE (Id = ?)";
@@ -136,7 +134,7 @@
 				$studentNumb = $row['U_Matricola'];
 
 				//prende la classe dello studente
-				$query = "SELECT U_Matricola, C_Id, FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -144,7 +142,7 @@
 				$studentClass = $row['C_Id'];
 
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT U_Matricola, C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 				
@@ -159,7 +157,7 @@
 			}
 		break;
 	}
-	
+
 	try{
 		$result = $db->prepare($query);
     	$result->execute($array);
