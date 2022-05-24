@@ -10,7 +10,7 @@
 	$numb = $_POST['matricola'];
 
 	//verifica se è presente un evento su un determinato studente
-	$query = "SELECT U_Matricola FROM evento WHERE Data = CURRENT_DATE AND Tipo != 'Uscita'";
+	$query = "SELECT U_Matricola FROM evento WHERE Data = CURRENT_DATE AND Tipo != 'Uscita' AND U_Matricola = '$numb'";
 	$result = $db->query($query);
 
 	if($result->rowCount() < 0){
