@@ -261,7 +261,7 @@
         $body .= '<div id="' . $mat . '" style="display: none;">
                     <label for="hour">Ora</label><br>
                     <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>
-                </div>';
+                </div><br>';
 
         $footer = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                     <input type="submit" value="Invia" class="btn btn-primary">';

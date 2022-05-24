@@ -9,7 +9,7 @@
 	$db = get_PDO_connection();
 	$numb = $_POST['matricola'];
 
-	$query = "INSERT INTO Evento (Stato, Data, Tipo, U_Matricola)";
+	$query = "INSERT INTO evento (Stato, Data, Tipo, U_Matricola)";
 	$query .= "VALUES (4, CURRDATE(), 1, ?)";
 	
 	try{
