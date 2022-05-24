@@ -11,8 +11,9 @@
 	$numb = $_POST['matricola'];
 
 	//verifica se è presente un evento assenza su un determinato studente
-	$query = "SELECT U_Matricola, Id FROM evento WHERE Data = CURRENT_DATE AND Tipo == 'Assenza' AND U_Matricola = '$numb'";
-	$result = $db->query($query);
+	$query = "SELECT Id FROM evento WHERE Data = CURRENT_DATE AND Tipo == 'Assenza' AND U_Matricola = ?";
+	$result = $db->prepare($query);
+	$result->execute([$numb]);	
 
 	if($result->rowCount() < 0){
 		$row = $result->fetchAll();
@@ -25,23 +26,15 @@
 		}catch(PDOException $e){
 			error("PDO_QUERY_Exception");
 		}
-	}else{
-		//verifica se è presente un evento ritardo su un determinato studente
-		$query = "SELECT U_Matricola, Id FROM evento WHERE Data = CURRENT_DATE AND Tipo == 'Ritardo' AND U_Matricola = '$numb'";
-		$result = $db->query($query);
+	}
 
-		if($result->rowCount() < 0){
-			error("event_already_exists");
-		}else{
-			$query = "INSERT INTO evento (Stato, Data, Ora_entrata, Motivazione, Tipo, U_Matricola)";
-			$query .= "VALUES (4, CURRENT_DATE, ?, ?, 2, ?);";
+	$query = "INSERT INTO evento (Stato, Data, Ora_entrata, Motivazione, Tipo, U_Matricola)";
+	$query .= "VALUES (4, CURRENT_DATE, ?, ?, 2, ?);";
 
-			try{
-				$result = $db->prepare($query);
-				$result->execute([$hour,$motivation,$numb]);	
-			}catch(PDOException $e){
-				error("PDO_QUERY_Exception");
-			}
-		}
+	try{
+		$result = $db->prepare($query);
+		$result->execute([$hour,$motivation,$numb]);	
+	}catch(PDOException $e){
+		error("PDO_QUERY_Exception");
 	}
 ?>
