@@ -240,7 +240,7 @@
         return $diag;
     }
 
-    function state_diag($mat='', $state=''){
+    function state_diag($mat='', $state='', $class=''){
         $MIN_H = '08:00';
         $MAX_H = '16:00';
 
@@ -257,7 +257,8 @@
                 </select>
                 <br>';
 
-        $body = '<input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
+        $body = '<input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>
+                <input type="hidden" id="classe" name="classe" value="' . $class . '" required>';
         $body .= '<div id="' . $mat . '" style="display: none;">
                     <label for="hour">Ora</label><br>
                     <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>
@@ -402,6 +403,7 @@
             $table .= check_role("admin") ? '<td><form method="POST" action="update' . $updateLink . '.php" style="display: flex;align-items: center;">
                                                     <input type="hidden" id="id" name="id" value="' . $record['Id'] . '" required>
                                                     <input type="hidden" id="remove" name="mode" value="r" required>
+                                                    <input type="hidden" id="matricola" name="matricola" value="' . $record['U_Matricola'] . '" required>
                                                     <input type="submit" value="Rimuovi" class="btn btn-primary">
                                                 </form></td>' 
             : '';
@@ -446,7 +448,9 @@
                 $table .= "<td><p>" . $counter . "</p></td>";
                 $table .= "<td><p>" . $record['Nome'] . "</p></td>";
                 $table .= "<td><p>" . $record['Cognome'] . "</p></td>";
-                $state = state_diag($record['Matricola'], isset($event) && ($event['Tipo'] == "Uscita" && $event['Stato'] == "Accettato") ? $event['Tipo'] : "Presenza");
+                $state = state_diag($record['Matricola'], (isset($event) && $event['Tipo'] != "Uscita") || 
+                                                            (isset($event) && ($event['Tipo'] == "Uscita" && $event['Stato'] == "Accettato")) ? $event['Tipo'] : "Presenza",
+                                                            $record['C_Id']);
                 $table .= "<td><p>" . $state . "</p></td>";
 
                 $table .= "<td><button class='btn btn-primary' onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
@@ -550,7 +554,7 @@
                         is_user_admin();
 
                         if(isset($_GET['class'])){
-                            $qry = 'SELECT Matricola, Nome, Cognome FROM appartenere AS a 
+                            $qry = 'SELECT Matricola, Nome, Cognome, C_Id FROM appartenere AS a 
                                     INNER JOIN classe AS c ON (c.Id = a.C_Id) 
                                     INNER JOIN utente AS u ON (u.Matricola = a.U_Matricola)
                                     WHERE C_Id = ? AND u.Tipo = "student"';
@@ -563,7 +567,6 @@
                             }
                             else
                                 echo "<p>Non ci sono studenti appartenenti a questa classe</p>";
-                                //error('class_not_bounded_to_user');
                         }
                         else{
                             $qry = 'SELECT * FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = ?';
@@ -577,16 +580,9 @@
                             else
                                 echo "<p>Non appartieni a nessuna Classe</p>";
                         }
-                        
-
-                        //aggiungere controlli per focussare la ricerca
-
                         break;
 
-                        // creare sezione s per vis eventi stud
                     case 's':
-                        //if(!isset($_GET['mat'])) error("matricola_not_provided");
-
                         $qry = $qry = 'SELECT * FROM evento WHERE U_Matricola = ?';
                         $stm = $db->prepare($qry);
                         $stm->execute([$_GET['mat']]);

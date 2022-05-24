@@ -37,4 +37,7 @@
 	}catch(PDOException $e){
 		error("PDO_QUERY_Exception");
 	}
+
+	header("Location: agenda.php?section=c&class=" . $_POST['classe']);
+	die();
 ?>
