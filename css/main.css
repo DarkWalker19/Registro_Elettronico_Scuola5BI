@@ -1,33 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
+.link {
+    color: #3366FF;
+}
 
-    .link {
-        color: #3366FF;
+.hover {
+    color: #f50202;
+}
+
+.right {
+    box-align: right;
     }
 
-    .hover {
-        color: #f50202;
-    }
+.footer {
+    position:relative;
+    bottom:0;
+    width:100%;
+    height: 20px;  
+    
+}
 
-    .right {
-        box-align: right;
-        }
+div.relative {
+    position: relative;
+    left: 30px;
+}
 
-    .footer {
-        position:relative;
-        bottom:0;
-        width:100%;
-        height: 20px;
+.styleLink{
+    color: blue;
+    cursor: pointer;
+}
 
-    }
+.titleNavbarBackground{
+    background-color: #3366FF;
+}
 
-    div.relative {
-        position: relative;
-        left: 30px;
-    }
+.styleTitle{
+    color: white;
+    font-size: 30px;
+}
 
-</style>
-</head>
-<body>
+.fontMedium{
+    font-size: 10px
+}
+
+.navbarBackground{
+    background-color: #6699FF;
+}
+
+.customButton{
+    background-color: #98CCFF; 
+}
+
+.navLink{
+    color: white; 
+}
