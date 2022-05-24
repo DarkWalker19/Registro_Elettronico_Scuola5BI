@@ -3,7 +3,7 @@
 
 	is_user_admin();
 
-	if(!isset(!isset($_POST['matricola']))
+	if(!isset($_POST['matricola']))
 		error("invalid");
 
 	$db = get_PDO_connection();
@@ -14,7 +14,7 @@
 	
 	try{
 		$result = $db->prepare($query);
-		$result->execute([$date, $numb]);
+		$result->execute([$numb]);
 	}catch(PDOException $e){
 		error("PDO_QUERY_Exception");
 	}
