@@ -26,6 +26,6 @@
 		}
 	}
 
-	header("Location: agenda.php?section=c&class=" . $_POST['classe']);
+	header("Location: agenda.php?section=c&class=" . $_POST['class']);
 	die();
 ?>

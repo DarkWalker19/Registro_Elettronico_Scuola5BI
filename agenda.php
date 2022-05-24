@@ -261,7 +261,7 @@
                 <br>';
 
         $body = '<input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>
-                <input type="hidden" id="classe" name="classe" value="' . $class . '" required>';
+                <input type="hidden" id="class" name="class" value="' . $class . '" required>';
         $body .= '<div id="' . $mat . '" style="display: none;">
                     <label for="hour">Ora</label><br>
                     <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" required><br>
