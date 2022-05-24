@@ -12,7 +12,7 @@
 		$motivation = $_POST['motivation'];
 		$numb = $_POST['matricola'];
 		
-		$query = "INSERT INTO Evento (Stato, Data, Ora_entrata, Motivazione, Tipo, U_Matricola)";
+		$query = "INSERT INTO evento (Stato, Data, Ora_entrata, Motivazione, Tipo, U_Matricola)";
 		$query .= "VALUES (4, CURRDATE(), ?, ?, 2, ?);";
 		
 		try{
