@@ -12,10 +12,7 @@
 		$hour = $_POST['hour'];
 		$motivation = $_POST['motivation'];
 		$numb = check_role("parent") ? $_SESSION['son'] : $_SESSION['user'];
-		echo $date;
-		echo $hour;
-		echo $motivation;
-		echo $numb;
+
 		$query = "INSERT INTO evento (Stato, Data, Ora_uscita, Motivazione, Tipo, U_Matricola)";
 		$query .= "VALUES (3, ?, ?, ?, 3, ?);";
 

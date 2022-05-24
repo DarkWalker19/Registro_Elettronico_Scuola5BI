@@ -3,7 +3,7 @@
 
     is_user_logged();
 
-    function assenza_diag($id='', $date='', $motiv='', $state=''){
+    function assenza_diag($id='', $date='', $motiv='', $state='', $mat=''){
         if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
         
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
@@ -22,7 +22,8 @@
 
         // Id Evento
         $body .= '
-                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+                <input type="hidden" id="id" name="id" value="' . $id . '" required>
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -79,7 +80,7 @@
         return $diag;
     }
 
-    function ritardo_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
+    function ritardo_diag($id='', $date='', $hour='', $motiv='', $state='', $mat=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
@@ -98,7 +99,8 @@
 
         // Id Evento
         $body .= '
-                <input type="hidden" id="id" name="id" value="' . $id . '" required>';
+                <input type="hidden" id="id" name="id" value="' . $id . '" required>
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -155,7 +157,7 @@
         return $diag;
     }
 
-    function uscita_diag($id='', $date='', $hour='', $motiv='', $state=''){ 
+    function uscita_diag($id='', $date='', $hour='', $motiv='', $state='', $mat=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
         $MIN_H = '08:00';
@@ -183,7 +185,8 @@
                     <input type="time" id="hour" name="hour" min="' . $MIN_H . '" max="' . $MAX_H . '" value="' . $hour . '" required ' . $READONLY . '><br>';
         
         // Id Evento
-        $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>';
+        $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -376,7 +379,7 @@
                 if($section == '') $table .= "<td></td><td></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
 
                 $updateLink = "Assenza";
             }
@@ -385,7 +388,7 @@
                 if($section == '') $table .= "<td></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
                 
                 $updateLink = "Ritardo";
             }
@@ -394,7 +397,7 @@
                 $table .= "<td><p>" . $record['Ora_uscita'] . "</p></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato']) . "</td>";
+                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
 
                 $updateLink = "Uscita";
             }
