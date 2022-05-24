@@ -13,7 +13,7 @@
 	$query = "SELECT U_Matricola FROM evento WHERE Data = CURRENT_DATE AND Tipo != 'Uscita' AND U_Matricola = '$numb'";
 	$result = $db->query($query);
 
-	if($result->rowCount() < 0){
+	if($result->rowCount() > 0){
 		error("event_already_exists");
 	}else{
 		$query = "INSERT INTO evento (Stato, Data, Tipo, U_Matricola)";
@@ -25,7 +25,7 @@
 			error("PDO_QUERY_Exception");
 		}
 	}
-	
+
 	header("Location: agenda.php?section=c&class=" . $_POST['classe']);
 	die();
 ?>

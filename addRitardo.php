@@ -11,18 +11,19 @@
 	$numb = $_POST['matricola'];
 
 	//verifica se è presente un evento assenza su un determinato studente
-	$query = "SELECT Id FROM evento WHERE Data = CURRENT_DATE AND Tipo == 'Assenza' AND U_Matricola = ?";
+	$query = "SELECT Id FROM evento WHERE Data = CURRENT_DATE AND Tipo != 'Uscita' AND U_Matricola = ?";
 	$result = $db->prepare($query);
 	$result->execute([$numb]);	
 
-	if($result->rowCount() < 0){
-		$row = $result->fetchAll();
+	if($result->rowCount() > 0){
+		$row = $result->fetch();
+
 		//se c'è lo rimuove
-		$query = "DELETE FROM evento WHERE U_Matricola = ? AND Id = ?";
+		$query = "DELETE FROM evento WHERE Id = ?";
 
 		try{
 			$result = $db->prepare($query);
-			$result->execute([$numb, $row['Id']]);	
+			$result->execute([$row['Id']]);	
 		}catch(PDOException $e){
 			error("PDO_QUERY_Exception");
 		}

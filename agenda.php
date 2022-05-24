@@ -456,7 +456,7 @@
                                                             $record['C_Id']);
                 $table .= "<td><p>" . $state . "</p></td>";
 
-                $table .= "<td><button class='btn btn-primary' onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
+                $table .= "<td><button class='btn btn-primary' onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "&class=" . $record['C_Id'] . "\"'>Eventi</button></td>";
 
                 $counter++;
             }
@@ -597,6 +597,7 @@
                         else
                             echo "<p>Non esistono eventi per questo utente</p>";
 
+                        echo '<button class="btn btn-primary" onclick="location.href=\'agenda.php?section=c&class=' . $_GET['class'] . '\'" type="button" align="right">Indietro</button>';
                         break;
 
                     default:
