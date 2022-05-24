@@ -63,9 +63,9 @@
 
 				$row = $result->fetch();
 				$studentNumb = $row['U_Matricola'];
-
+				
 				//prende la classe dello studente
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -73,7 +73,7 @@
 				$studentClass = $row['C_Id'];
 				
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 			
@@ -100,7 +100,7 @@
 				$studentNumb = $row['U_Matricola'];
 
 				//prende la classe dello studente
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -108,7 +108,7 @@
 				$studentClass = $row['C_Id'];
 				
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 
@@ -134,7 +134,7 @@
 				$studentNumb = $row['U_Matricola'];
 
 				//prende la classe dello studente
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user']]);
 
@@ -142,7 +142,7 @@
 				$studentClass = $row['C_Id'];
 
 				//prende la classe di appartenenza dell'admin
-				$query = "SELECT C_Id FROM appartenere INNER JOIN classi ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
+				$query = "SELECT C_Id FROM appartenere INNER JOIN classe ON (appartenere.C_Id = classe.Id) WHERE U_Matricola = ? AND C_Id = ?";
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 				
