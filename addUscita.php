@@ -8,12 +8,16 @@
 		if(!isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
 
 		$db = get_PDO_connection();
+		$date = $_POST['date'];
 		$hour = $_POST['hour'];
 		$motivation = $_POST['motivation'];
 		$numb = check_role("parent") ? $_SESSION['son'] : $_SESSION['user'];
-		
+		echo $date;
+		echo $hour;
+		echo $motivation;
+		echo $numb;
 		$query = "INSERT INTO evento (Stato, Data, Ora_uscita, Motivazione, Tipo, U_Matricola)";
-		$query .= "VALUES (4, ?, ?, ?, 3, ?);";
+		$query .= "VALUES (3, ?, ?, ?, 3, ?);";
 
 		try{
 			$result = $db->prepare($query);

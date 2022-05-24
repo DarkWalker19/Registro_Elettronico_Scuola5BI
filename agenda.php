@@ -431,7 +431,7 @@
 
             if($section == 's'){
 
-                $qry = 'SELECT Id, Tipo FROM evento AS e 
+                $qry = 'SELECT Id, Tipo, Stato FROM evento AS e 
                         WHERE (U_Matricola = ? AND e.Data = CURDATE())';
                 
                 $db = get_PDO_connection();
@@ -446,7 +446,7 @@
                 $table .= "<td><p>" . $counter . "</p></td>";
                 $table .= "<td><p>" . $record['Nome'] . "</p></td>";
                 $table .= "<td><p>" . $record['Cognome'] . "</p></td>";
-                $state = state_diag($record['Matricola'], isset($event) ? $event['Tipo'] : "Presenza");
+                $state = state_diag($record['Matricola'], isset($event) && ($event['Tipo'] == "Uscita" && $event['Stato'] == "Accettato") ? $event['Tipo'] : "Presenza");
                 $table .= "<td><p>" . $state . "</p></td>";
 
                 $table .= "<td><button class='btn btn-primary' onclick='window.location.href = \"?section=s&mat=" . $record['Matricola'] . "\"'>Eventi</button></td>";
