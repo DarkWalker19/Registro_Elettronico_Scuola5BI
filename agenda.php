@@ -34,7 +34,7 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="mode" value="a">
+                    <input type="radio" id="approve" name="mode" value="a" checked>
                     <label for="mode">Accetta</label><br>
                     <input type="radio" id="deny" name="mode" value="d">
                     <label for="mode">Rifiuta</label><br>'
@@ -110,7 +110,7 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="mode" value="a">
+                    <input type="radio" id="approve" name="mode" value="a" checked>
                     <label for="mode">Accetta</label><br>
                     <input type="radio" id="deny" name="mode" value="d">
                     <label for="mode">Rifiuta</label><br>'
@@ -195,7 +195,7 @@
         
         $approve = check_role('admin') && $state == "In attesa" ?
                     '<br>
-                    <input type="radio" id="approve" name="mode" value="a">
+                    <input type="radio" id="approve" name="mode" value="a" checked>
                     <label for="mode">Accetta</label><br>
                     <input type="radio" id="deny" name="mode" value="d">
                     <label for="mode">Rifiuta</label><br>'
