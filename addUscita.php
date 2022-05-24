@@ -10,7 +10,7 @@
 		$db = get_PDO_connection();
 		$hour = $_POST['hour'];
 		$motivation = $_POST['motivation'];
-		$numb = $_POST['matricola'];
+		$numb = check_role("parent") ? $_SESSION['son'] : $_SESSION['user'];
 		
 		$query = "INSERT INTO evento (Stato, Data, Ora_uscita, Motivazione, Tipo, U_Matricola)";
 		$query .= "VALUES (4, ?, ?, ?, 3, ?);";
