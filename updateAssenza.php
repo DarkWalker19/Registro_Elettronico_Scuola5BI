@@ -42,7 +42,7 @@
 						$result->execute([$id, $_SESSION['user']]);
 						
 						//verifica se la matricola dello studente in sessione e quella dello studente proprietario dell'evento combacino
-						if($stm->rowCount() == 0){
+						if($result->rowCount() == 0){
 							error("not_owner");
 						}else{
 							$query = "UPDATE evento SET Motivazione = ?, Stato = 'In attesa' WHERE (Id = ?)";
@@ -78,7 +78,7 @@
 				$result->execute([$_SESSION['user'], $studentClass]);
 			
 				//verifica che la classe dell'admin in sessione combaci con quella dello studente proprietario dell'evento
-				if($stm->rowCount() == 0){
+				if($result->rowCount() == 0){
 					error("not_same_class");
 				}else{
 					$query = "DELETE FROM evento WHERE (Id = ?)";
@@ -113,7 +113,7 @@
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 
-				if($stm->rowCount() == 0){
+				if($result->rowCount() == 0){
 					error("not_same_class");
 				}else{
 					$query = "UPDATE evento SET Stato = 'Accettato' WHERE (Id = ?)";
@@ -148,7 +148,7 @@
 				$result = $db->prepare($query);
 				$result->execute([$_SESSION['user'], $studentClass]);
 				
-				if($stm->rowCount() == 0){
+				if($result->rowCount() == 0){
 					error("not_same_class");
 				}else{
 					$query = "UPDATE evento SET Stato = 'Rifiutato' WHERE (Id = ?)";
@@ -159,15 +159,5 @@
 			}
 		break;
 	}
-	
-	var_dump($mode);
-	var_dump($query);
-	var_dump($array);
-	try{
-		$result = $db->prepare($query);
-		$result->execute($array);
-	}catch(PDOException $e){
-		error("PDO_Query_Exception");
-	}
 
-	?>
+?>
