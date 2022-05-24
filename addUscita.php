@@ -5,16 +5,15 @@
 
 	if(check_role("parent")||$_SESSION['adult']){
 	
-		if(!isset($_POST['date']) || !isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
+		if(!isset(!isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
 
 		$db = get_PDO_connection();
-		$date = $_POST['date'];
 		$hour = $_POST['hour'];
 		$motivation = $_POST['motivation'];
 		$numb = $_POST['matricola'];
 		
 		$query = "INSERT INTO evento (Stato, Data, Ora_uscita, Motivazione, Tipo, U_Matricola)";
-		$query .= "VALUES (4, ?, ?, ?, 3, ?);";
+		$query .= "VALUES (4, CURRENT_DATE, ?, ?, 3, ?);";
 
 		try{
 			$result = $db->prepare($query);
