@@ -2,8 +2,8 @@
 	require_once "utils/utils.php";
 
     is_user_admin();
-	
-	if(!isset($_POST['hour']) || !isset($_POST['motivation'])) error("invalid");
+
+	if(!isset($_POST['hour'])) error("invalid");
 
 	$db = get_PDO_connection();
 	$hour = $_POST['hour'];
