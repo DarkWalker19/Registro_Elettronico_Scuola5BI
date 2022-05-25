@@ -13,11 +13,11 @@
         <?php
             print_header();
             if((!isset($_SESSION['name'])) || ($_SESSION['name'] == null)){
-                echo "<div class='_center'>
+                echo "<div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>
                         <h4>Non sei loggato! Clicca <b>Login</b> in alto per accedere.</h4>
                     </div>";
             }else{
-                echo "<div class='_center'>
+                echo "<div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>
                         <h4>Benvenuto". " " . "<i>" . $_SESSION['name'] . "</i></h4>
                     </div>";
             }

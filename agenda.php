@@ -369,7 +369,7 @@
         if($section == '') $tableHeaders .= "<th scope='col'>Ora Entrata</th><th scope='col'>Ora Uscita</th>";
 
         $tableHeaders .= "<th scope='col'>Motivazione</th></tr>";
-        $tableHeaders = "</thead>";
+        $tableHeaders .= "</thead>";
 
         $table .= $tableHeaders;
         $table .= "<tbody>";
@@ -520,6 +520,7 @@
             $db = get_PDO_connection();
 
             if(isset($_GET['section'])){
+                echo "<div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>";
 
                 $section = $_GET['section'];
 
@@ -587,7 +588,7 @@
                     case 'c':
                         // Tabella Classi
                         is_user_admin();
-                        echo "<div class='_center'>";
+                        
                         if(isset($_GET['class'])){
                             $qry = 'SELECT Matricola, Nome, Cognome, C_Id FROM appartenere AS a 
                                     INNER JOIN classe AS c ON (c.Id = a.C_Id) 
@@ -615,7 +616,7 @@
                             else
                                 echo "<p>Non appartieni a nessuna Classe</p>";
                         }
-                        echo "</div>";
+                        
                         break;
 
                     case 's':
@@ -637,6 +638,7 @@
                         error("bad_section");
                         break;
                 }
+                echo "</div>";
             }
             print_footer();
         ?>
