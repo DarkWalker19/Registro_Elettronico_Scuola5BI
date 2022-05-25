@@ -7,15 +7,15 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-light" style="background-color: #3366FF;">
+        <nav class="navbar navbar-light titleNavbarBackground">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <p style="color: white; font-size: 30px">LIBRETTO ELETTRONICO<br>
-                        <i style="font-size: 10px">Itis G. Cardano</i>
+                    <p class="_hTitle">LIBRETTO ELETTRONICO<br>
+                        <i class="sText">Itis G. Cardano</i>
                     </p>
                 </a>
                 <a href="https://www.itiscardanopv.edu.it/">
-                    <img src="./img/logo.png" alt="LogoRegistro" height="60" width="60"></img>
+                    <img class="logo" src="./img/logo.png" alt="LogoRegistro"></img>
                 </a>
             </div>
         </nav>
@@ -23,9 +23,9 @@
         <?php
 
             if(!isset($_SESSION['user'])){
-                echo    '<nav class="navbar navbar-expand-lg" style="background-color: #6699FF">
-                            <div style="display: flex; justify-content: flex-end" class="container-fluid">';
-                echo            "<button class=\"btn btn-primary\" style=\"background-color: #98CCFF;\" onclick=\"location.href='login.php'\" type=\"button\">Login</button>
+                echo    '<nav class="navbarBackground navbar navbar-expand-lg">
+                            <div class="container-fluid divLoginButton">';
+                echo            "<button class=\"customButton btn btn-primary\" onclick=\"location.href='login.php'\" type=\"button\">Login</button>
                             </div>
                         </nav>";
             }else
