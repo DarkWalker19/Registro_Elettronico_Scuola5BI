@@ -62,11 +62,11 @@ div.relative {
     color: white; 
 }
 
-.input-field{
-    position: relative;
-    right:-170;
-    transform: translateY(-160%);
+.bPosition{
+    display: flex; 
+    justify-content: flex-end;
 }
+
 ._abs-center{
     position:absolute; 
     margin-left: 35%; 
