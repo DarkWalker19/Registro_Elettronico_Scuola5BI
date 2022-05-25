@@ -540,7 +540,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p>Non ci sono Assenze</p>";
+                            echo "<p style='text-align: center'>Non ci sono Assenze</p>";
 
                         break;
         
@@ -559,7 +559,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p>Non ci sono Ritardi</p>";
+                            echo "<p style='text-align: center'>Non ci sono Ritardi</p>";
 
                         break;
                     
@@ -581,7 +581,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p>Non ci sono Richieste di Uscita Anticipata</p>";
+                            echo "<p style='text-align: center'>Non ci sono Richieste di Uscita Anticipata</p>";
 
                         break;
 
@@ -602,7 +602,7 @@
                                 echo studentClassTable('s', $records);
                             }
                             else
-                                echo "<p>Non ci sono studenti appartenenti a questa classe</p>";
+                                echo "<p style='text-align: center'>Non ci sono studenti appartenenti a questa classe</p>";
                         }
                         else{
                             $qry = 'SELECT * FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = ?';
@@ -614,7 +614,7 @@
                                 echo studentClassTable('c', $records);
                             }
                             else
-                                echo "<p>Non appartieni a nessuna Classe</p>";
+                                echo "<p style='text-align: center'>Non appartieni a nessuna Classe</p>";
                         }
                         
                         break;
@@ -629,7 +629,7 @@
                             echo eventTable('', $records, $_GET['class']);
                         }
                         else
-                            echo "<p>Non esistono eventi per questo utente</p>";
+                            echo "<p style='text-align: center'>Non esistono eventi per questo utente</p>";
 
                         echo '<button class="btn btn-primary" onclick="location.href=\'agenda.php?section=c&class=' . $_GET['class'] . '\'" type="button" align="right">Indietro</button>';
                         break;
