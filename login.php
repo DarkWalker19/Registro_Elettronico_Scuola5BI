@@ -25,7 +25,7 @@
 			print_header();
 		?>
         <form action="auth.php" method="POST" class="form">
-			<div class="form-row">
+			<div class="form-row" align="center">
 				<h4>Accedi con le credenziali</h4><br>
 				<div class="form-group col-md-6">
 					<label for="id">Matricola</label>
@@ -34,7 +34,9 @@
 				<div class="form-group col-md-6">
 					<label for="password">Password</label>
 					<input style=background-color:#99ccff;width:10cm; type="password" class="form-control" placeholder="Inserisci Password" id="password" name="password"></input>
-					<i class="bi bi-eye-slash" id="togglePassword" onclick="_togglePassword()"></i>
+					<div class="input-field">
+						<i class="bi bi-eye-slash" id="togglePassword" onclick="_togglePassword()"></i>
+					</div>
 				</div><br>
 				<?php
 					$_SESSION['captcha'] = generate_captcha();

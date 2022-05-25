@@ -52,3 +52,9 @@ div.relative {
 .navLink{
     color: white; 
 }
+
+.input-field{
+    position: relative;
+    right:-170;
+    transform: translateY(-160%);
+}
