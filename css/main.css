@@ -32,9 +32,18 @@ div.relative {
     background-color: #3366FF;
 }
 
-.styleTitle{
+._hTitle{
     color: white;
-    font-size: 30px;
+    font-size: 25px;
+}
+
+.sText{
+    font-size: 10px;
+}
+
+.logo{
+    height:60;
+    width:60;
 }
 
 .fontMedium{
@@ -57,4 +66,19 @@ div.relative {
     position: relative;
     right:-170;
     transform: translateY(-160%);
+}
+._abs-center{
+    position:absolute; 
+    margin-left: 35%; 
+    margin-top: 10%; 
+    margin-bottom: 10%; 
+    margin-right:35%
+}
+
+._center{
+    position:relative; 
+    margin-top: 1%; 
+    margin-left: 35%; 
+    margin-bottom: 30%; 
+    margin-right:35%;
 }
