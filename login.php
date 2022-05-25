@@ -24,7 +24,7 @@
 		<?php
 			print_header();
 		?>
-        <form action="auth.php" method="POST" class="form">
+        <form action="auth.php" method="POST" class="form" style="margin-bottom: 30%;">
 			<div class="form-row" align="center">
 				<h4>Accedi con le credenziali</h4><br>
 				<div class="form-group col-md-6">
