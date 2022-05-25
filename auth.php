@@ -23,12 +23,12 @@
     }
     else{
         $row = $result->fetch();
-        $_SESSION['user'] = $row[0];
-        $_SESSION['name'] = $row[1] . " " . $row[2];
-        $_SESSION['role'] = $row[4];
+        $_SESSION['user'] = $row['Matricola'];
+        $_SESSION['name'] = $row['Nome'] . " " . $row['Cognome'];
+        $_SESSION['role'] = $row['Tipo'];
 
         if(check_role('student')){
-            $born_date = new DateTime($row[3]);
+            $born_date = new DateTime($row['Data_nascita']);
             $today = new DateTime('now');
 
             $age = $today->diff($born_date);
@@ -39,7 +39,7 @@
                 $_SESSION['adult'] = false;
         }
         else if(check_role('parent'))
-            $_SESSION['son'] = $row[5];
+            $_SESSION['son'] = $row['U_Matricola'];
         
         header("Location: index.php");
     }

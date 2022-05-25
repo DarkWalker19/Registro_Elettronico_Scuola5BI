@@ -11,8 +11,7 @@
 	$id = $_POST['id'];
 	$date = $_POST['date'];
 	$hour = $_POST['hour'];
-	$motivation = $_POST['motivation'];
-
+	$motivation = htmlspecialchars($_POST['motivation']);
 	
 	switch($mode){
 		case 'm': //motivate
@@ -20,7 +19,7 @@
 			if($_SESSION['adult'] || check_role('parent')){
 				if(check_role('parent')){
 					//prende la matricola dello studente minorenne
-					$sonParentNumb = $SESSION['son'];
+					$sonParentNumb = $_SESSION['son'];
 
 					//prende la matricola dello studente proprietario dell'evento se la matricola è la stessa della precedente
 					$query = "SELECT U_Matricola FROM evento WHERE Id = ? AND U_Matricola = ?";
@@ -165,7 +164,7 @@
 	}
 	
 	if(check_role("admin")){
-		header("Location: agenda.php?section=s&mat=" . $_POST['matricola']);
+		header("Location: agenda.php?section=s&mat=" . $_POST['matricola'] . "&class=" . $_POST['class']);
 		die();
 	}
 	else{

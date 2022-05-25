@@ -22,6 +22,7 @@
     function print_metadata(){
         echo "<meta name='author' content='Gruppo 3'>";
         echo "<meta name='lang' content='it'>";
+        echo "<meta name='keywords' content='HTML, CSS, JavaScript'>";
         echo "<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>";
         return;
     }

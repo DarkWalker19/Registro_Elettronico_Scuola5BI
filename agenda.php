@@ -3,7 +3,7 @@
 
     is_user_logged();
 
-    function assenza_diag($id='', $date='', $motiv='', $state='', $mat=''){
+    function assenza_diag($id='', $date='', $motiv='', $state='', $mat='', $class=''){
         if(!isset($id) || !isset($date) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
         
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
@@ -23,7 +23,8 @@
         // Id Evento
         $body .= '
                 <input type="hidden" id="id" name="id" value="' . $id . '" required>
-                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>
+                <input type="hidden" id="class" name="class" value="' . $class . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -80,7 +81,7 @@
         return $diag;
     }
 
-    function ritardo_diag($id='', $date='', $hour='', $motiv='', $state='', $mat=''){ 
+    function ritardo_diag($id='', $date='', $hour='', $motiv='', $state='', $mat='', $class=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
         $READONLY = check_role("admin") || $state == "In attesa" || $state == "Accettato" ? "readonly" : "";
@@ -100,7 +101,8 @@
         // Id Evento
         $body .= '
                 <input type="hidden" id="id" name="id" value="' . $id . '" required>
-                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>
+                <input type="hidden" id="class" name="class" value="' . $class . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -157,7 +159,7 @@
         return $diag;
     }
 
-    function uscita_diag($id='', $date='', $hour='', $motiv='', $state='', $mat=''){ 
+    function uscita_diag($id='', $date='', $hour='', $motiv='', $state='', $mat='', $class=''){ 
         if(!isset($id) || !isset($date) || !isset($hour) || !isset($state)) error("PHP_insufficient_assenza_diag_params");
 
         $MIN_H = '08:00';
@@ -186,7 +188,8 @@
         
         // Id Evento
         $body .= '<input type="hidden" id="id" name="id" value="' . $id . '" required>
-                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>';
+                <input type="hidden" id="matricola" name="matricola" value="' . $mat . '" required>
+                <input type="hidden" id="class" name="class" value="' . $class . '" required>';
 
         // Mode m = motivate
         $body .= (check_role('parent') || $_SESSION['adult']) && ($state == "Da giustificare" || $state == "Rifiutato") ? '<input type="hidden" id="motivate" name="mode" value="m" required>' : '';
@@ -247,7 +250,7 @@
         $MIN_H = '08:00';
         $MAX_H = '16:00';
 
-        $modalName = "stateModal";
+        $modalName = "stateModal_" . $mat;
 
         $btnText = $state;
         $title = "Stato";
@@ -356,7 +359,7 @@
         return $diag;
     }
 
-    function eventTable($section='', $events=[]){
+    function eventTable($section='', $events=[], $class=''){
         $table = "<table>";
 
         $tableHeaders = "<tr>
@@ -379,7 +382,7 @@
                 if($section == '') $table .= "<td></td><td></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
+                $table .= "<td>" . assenza_diag($record['Id'], $record['Data'], $record['Motivazione'], $record['Stato'], $record['U_Matricola'], $class) . "</td>";
 
                 $updateLink = "Assenza";
             }
@@ -388,7 +391,7 @@
                 if($section == '') $table .= "<td></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
+                $table .= "<td>" . ritardo_diag($record['Id'], $record['Data'], $record['Ora_entrata'], $record['Motivazione'], $record['Stato'], $record['U_Matricola'], $class) . "</td>";
                 
                 $updateLink = "Ritardo";
             }
@@ -397,7 +400,7 @@
                 $table .= "<td><p>" . $record['Ora_uscita'] . "</p></td>";
 
                 $table .= "<td><p>" . $record['Motivazione'] . "</p></td>";
-                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato'], $record['U_Matricola']) . "</td>";
+                $table .= "<td>" . uscita_diag($record['Id'], $record['Data'], $record['Ora_uscita'], $record['Motivazione'], $record['Stato'], $record['U_Matricola'], $class) . "</td>";
 
                 $updateLink = "Uscita";
             }
@@ -405,6 +408,7 @@
             //Remove event button
             $table .= check_role("admin") ? '<td><form method="POST" action="update' . $updateLink . '.php" style="display: flex;align-items: center;">
                                                     <input type="hidden" id="id" name="id" value="' . $record['Id'] . '" required>
+                                                    <input type="hidden" id="class" name="class" value="' . $class . '" required>
                                                     <input type="hidden" id="remove" name="mode" value="r" required>
                                                     <input type="hidden" id="matricola" name="matricola" value="' . $record['U_Matricola'] . '" required>
                                                     <input type="submit" value="Rimuovi" class="btn btn-primary">
@@ -444,9 +448,29 @@
                 $stm->execute([$record['Matricola']]);
 
                 if($stm->rowCount() > 0)
-                    $event = $stm->fetch();
+                    $events = $stm->fetchAll();
                 else
-                    $event = null;
+                    $events = null;
+
+                $event = null;
+                if(isset($events)){
+                    foreach($events as $e){
+                        if($e['Tipo'] == "Uscita" && strtotime($e['Ora_uscita']) <= time() && $e['Stato'] == "Accettato"){
+                            $event = $e;
+                            break;
+                        }
+                    }
+
+                    if(!isset($event)){
+                        foreach($events as $e){
+                            
+                            if($e['Tipo'] != "Uscita"){
+                                $event = $e;
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 $table .= "<td><p>" . $counter . "</p></td>";
                 $table .= "<td><p>" . $record['Nome'] . "</p></td>";
@@ -481,7 +505,7 @@
     <body>
         <?php
             print_header();
-            
+
             $isAdmin = check_role('admin');
             $student = $isAdmin ? null : (check_role('parent') ? $_SESSION['son'] : $_SESSION['user']);
 
@@ -592,7 +616,7 @@
                         
                         if($stm->rowCount() > 0){
                             $records = $stm->fetchAll();
-                            echo eventTable('', $records);
+                            echo eventTable('', $records, $_GET['class']);
                         }
                         else
                             echo "<p>Non esistono eventi per questo utente</p>";
