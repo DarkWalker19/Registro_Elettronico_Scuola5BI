@@ -360,16 +360,19 @@
     }
 
     function eventTable($section='', $events=[], $class=''){
-        $table = "<table>";
+        $table = "<table class='table table-hover'>";
 
-        $tableHeaders = "<tr>
-                    <th>Id</th><th>Tipo</th><th>Stato</th><th>Data</th>";
-        $tableHeaders .= $section == 'r' ? '<th>Ora Entrata</th>' : ($section == 'u' ? "<th>Ora Uscita</th>" : '');
-        if($section == '') $tableHeaders .= '<th>Ora Entrata</th><th>Ora Uscita</th>';
+        $tableHeaders = "<thead class='table-primary'>";
+        $tableHeaders .= "<tr>
+                    <th scope='col'>Id</th><th scope='col'>Tipo</th><th scope='col'>Stato</th><th scope='col'>Data</th>";
+        $tableHeaders .= $section == 'r' ? "<th scope='col'>Ora Entrata</th>" : ($section == 'u' ? "<th scope='col'>Ora Uscita</th>" : '');
+        if($section == '') $tableHeaders .= "<th scope='col'>Ora Entrata</th><th scope='col'>Ora Uscita</th>";
 
-        $tableHeaders .= "<th>Motivazione</th></tr>";
+        $tableHeaders .= "<th scope='col'>Motivazione</th></tr>";
+        $tableHeaders = "</thead>";
 
         $table .= $tableHeaders;
+        $table .= "<tbody>";
 
         foreach($events as $record){
             $table .= "<tr>";
@@ -417,22 +420,26 @@
 
             $table .= "</tr>";
         }
+        $table .= "</tbody>";
         $table .= "</table>";
 
         return $table;
     }
 
     function studentClassTable($section='', $records=[]){
-        $table = "<table>";
+        $table = "<table class='table table-hover'>";
 
+        $tableHeaders = "<thead class='table-primary'>";
         if($section == 's')
-            $tableHeaders = "<tr><th>Num</th><th>Nome</th><th>Cognome</th><th>Stato</th></tr>";
+            $tableHeaders .= "<tr><th scope='col'>Num</th><th scope='col'>Nome</th><th scope='col'>Cognome</th><th scope='col'>Stato</th></tr>";
         else if($section == 'c')
-            $tableHeaders = "<tr><th>Classe</th></tr>";
+            $tableHeaders .= "<tr><th scope='col'>Classe</th></tr>";
         else
             error("bad_section_studentTable");
+        $tableHeaders .= "</thead>";
 
         $table .= $tableHeaders;
+        $table .= "<tbody>";
 
         $counter = 1;
         foreach($records as $record){
@@ -489,6 +496,7 @@
         
             $table .= "</tr>";
         }
+        $table .= "</tbody>";
         $table .= "</table>";
 
         return $table;
@@ -579,7 +587,7 @@
                     case 'c':
                         // Tabella Classi
                         is_user_admin();
-
+                        echo "<div class='_center'>";
                         if(isset($_GET['class'])){
                             $qry = 'SELECT Matricola, Nome, Cognome, C_Id FROM appartenere AS a 
                                     INNER JOIN classe AS c ON (c.Id = a.C_Id) 
@@ -607,6 +615,7 @@
                             else
                                 echo "<p>Non appartieni a nessuna Classe</p>";
                         }
+                        echo "</div>";
                         break;
 
                     case 's':
