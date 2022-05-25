@@ -336,7 +336,7 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
                 ' . $btnText . '
             </button>            
-            <form method="POST" action="' . $formAction . '">
+            <form method="POST" action="' . $formAction . '" style="text-align: center">
                 <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
