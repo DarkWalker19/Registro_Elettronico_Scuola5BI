@@ -72,13 +72,13 @@ div.relative {
     margin-left: 35%; 
     margin-top: 10%; 
     margin-bottom: 10%; 
-    margin-right:35%
+    margin-right:35%;
 }
 
 ._center{
-    position:relative; 
+    position: relative; 
     margin-top: 1%; 
     margin-left: 35%; 
     margin-bottom: 30%; 
-    margin-right:35%;
+    margin-right: 35%;
 }

@@ -13,10 +13,8 @@
         <?php
             print_header();
         ?>
-        <div class="">
+        <div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>
             <h1>Error</h1>
-        </div>
-        <div class="">
             <?php
                 if(!isset($_GET['err']))
                     echo "No error provided";
@@ -25,11 +23,11 @@
                     echo "Error: $err";
                 }
             ?>
-        </div>
         <br>
         <p>Hai bisogno di aiuto? Contatta: rserci.s@itiscardanopv.edu.it</p>
         <br><br>
         <button onclick="location.href='index.php'" type="button" class="btn btn-primary">Indietro</button>
+        </div>
         <?php
             print_footer();
         ?>
