@@ -34,7 +34,7 @@
 				<div class="form-group col-md-6">
 					<label for="password">Password</label>
 					<input style=background-color:#99ccff;width:10cm; type="password" class="form-control" placeholder="Inserisci Password" id="password" name="password"></input>
-					<div style="position: relative; right:-170; transform: translateY(-160%);">
+					<div style="position: relative; right:-170; transform: translateY(-160%); max-width: 30px;">
 						<i class="bi bi-eye-slash" id="togglePassword" onclick="_togglePassword()"></i>
 					</div>
 				</div><br>

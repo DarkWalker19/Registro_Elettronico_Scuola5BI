@@ -360,7 +360,7 @@
     }
 
     function eventTable($section='', $events=[], $class=''){
-        $table = "<table class='table table-hover'>";
+        $table = "<table class='table table-hover' style='text-align: center'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         $tableHeaders .= "<tr>
@@ -427,7 +427,7 @@
     }
 
     function studentClassTable($section='', $records=[]){
-        $table = "<table class='table table-hover'>";
+        $table = "<table class='table table-hover' style='text-align: center'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         if($section == 's')
