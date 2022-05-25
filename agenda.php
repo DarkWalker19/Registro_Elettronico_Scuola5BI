@@ -529,7 +529,7 @@
                         // Tabella Assenze
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1>Assenze</h1>";
+                        echo "<h1 style='text-align: center'>Assenze</h1>";
 
                         $qry = 'SELECT * FROM evento WHERE Tipo = "Assenza" AND U_Matricola = ?';
                         $stm = $db->prepare($qry);
@@ -548,7 +548,7 @@
                         // Tabella Ritardi
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1>Ritardi</h1>";
+                        echo "<h1 style='text-align: center'>Ritardi</h1>";
 
                         $qry = 'SELECT * FROM evento WHERE Tipo = "Ritardo" AND U_Matricola = ?';
                         $stm = $db->prepare($qry);
@@ -567,7 +567,7 @@
                         // Tabella Uscite
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1>Richieste di Uscita Anticipata</h1>";
+                        echo "<h1 style='text-align: center'>Richieste di Uscita Anticipata</h1>";
 
                         if($_SESSION['adult']||check_role('parent'))
                             echo req_uscita_diag();
