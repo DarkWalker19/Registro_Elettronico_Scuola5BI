@@ -23,11 +23,11 @@
                     echo "Error: $err";
                 }
             ?>
-        </div>
         <br>
         <p>Hai bisogno di aiuto? Contatta: rserci.s@itiscardanopv.edu.it</p>
         <br><br>
         <button onclick="location.href='index.php'" type="button" class="btn btn-primary">Indietro</button>
+        </div>
         <?php
             print_footer();
         ?>

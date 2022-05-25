@@ -492,7 +492,7 @@
                 $counter++;
             }
             else
-                $table .= "<td><p onclick='window.location.href = \"?section=c&class=" . $record['Id'] . "\"'>" . $record['Anno'] . $record['Sezione'] . "</p></td>";
+                $table .= "<td style='cursor: pointer' onclick='window.location.href = \"?section=c&class=" . $record['Id'] . "\"'><p>" . $record['Anno'] . $record['Sezione'] . "</p></td>";
         
             $table .= "</tr>";
         }
