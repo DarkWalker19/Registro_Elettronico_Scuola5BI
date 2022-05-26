@@ -10,8 +10,8 @@
         <nav class="navbar navbar-light" style="background-color: #3366FF;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <p style="color: white; font-size: 25px">LIBRETTO ELETTRONICO<br>
-                        <i style="font-size: 10px">Itis G. Cardano</i>
+                    <p style="color: white; font-size: 4vw;">LIBRETTO ELETTRONICO<br>
+                        <i style="font-size: 2.5vw">Itis G. Cardano</i>
                     </p>
                 </a>
                 <a href="https://www.itiscardanopv.edu.it/">

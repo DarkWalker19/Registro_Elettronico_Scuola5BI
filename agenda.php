@@ -462,7 +462,8 @@
                 $event = null;
                 if(isset($events)){
                     foreach($events as $e){
-                        if($e['Tipo'] == "Uscita" && strtotime($e['Ora_uscita']) <= time() && $e['Stato'] == "Accettato"){
+                        if($e['Tipo'] == "Uscita" && isset($e['Ora_uscita']) && strtotime($e['Ora_uscita']) <= time() && $e['Stato'] == "Accettato"){
+                            var_dump($e['Tipo'] == "Uscita" && strtotime($e['Ora_uscita']) <= time() && $e['Stato'] == "Accettato");
                             $event = $e;
                             break;
                         }
@@ -520,7 +521,7 @@
             $db = get_PDO_connection();
 
             if(isset($_GET['section'])){
-                echo "<div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>";
+                echo "<div class='table-responsive' style='margin-top: 1%; margin-bottom: 30%;'>";
 
                 $section = $_GET['section'];
 
