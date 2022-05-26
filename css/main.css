@@ -47,12 +47,12 @@
 
 ._title{
     color: white; 
-    font-size: 3vw;
+    font-size: min(max(3vw, 15px), 50px);
 }
 
 ._subtitle{
     color: white; 
-    font-size: 1.5vw;
+    font-size: min(max(1.5vw, 10px), 25px);
 }
 
 ._menu-text-color{
@@ -65,6 +65,6 @@
 }
 
 ._logo{
-    width: 7vw; 
-    height: 7vw;
+    width: min(max(10vw, 40px), 100px); 
+    height: min(max(10vw, 40px), 100px);
 }
