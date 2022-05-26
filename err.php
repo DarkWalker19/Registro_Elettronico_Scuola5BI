@@ -13,7 +13,7 @@
         <?php
             print_header();
         ?>
-        <div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>
+        <div class='_center-relative'>
             <h1>Error</h1>
             <?php
                 if(!isset($_GET['err']))

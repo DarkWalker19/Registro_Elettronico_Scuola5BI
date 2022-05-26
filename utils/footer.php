@@ -42,7 +42,7 @@
                     <h6 class="text-uppercase fw-bold mb-4">
                         Link utili
                     </h6>
-                    <p style="color: blue; cursor: pointer" onclick="location.href = 'https://www.itiscardanopv.edu.it/';">
+                    <p class="_link" onclick="location.href = 'https://www.itiscardanopv.edu.it/';">
                         Itis G. Cardano
                     </p>
                 </div>
@@ -67,7 +67,7 @@
             <!-- Section: Links  -->
         
             <!-- Copyright -->
-            <div class="text-center p-4" style="background-color: #3366FF;">
+            <div class="text-center p-4 _bkg1">
             </div>
             <!-- Copyright -->
         </footer>

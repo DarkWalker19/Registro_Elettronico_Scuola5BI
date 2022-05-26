@@ -101,7 +101,7 @@
         
         echo '<img src="data:image/png;base64,' . base64_encode($obContents) . '" /><br><br>';
         echo "<label for='captcha'>Captcha</label><br>";
-        echo "<input style=background-color:#99ccff;width:10cm; class=form-control type='text' placeholder='Inserisci Captcha' name='captcha' required></input>";
+        echo "<input class='form-control _input-field' type='text' placeholder='Inserisci Captcha' name='captcha' required></input>";
         return $text;
     }
 

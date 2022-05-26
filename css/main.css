@@ -1,84 +1,70 @@
-.link {
-    color: #3366FF;
+._center-text{ 
+    text-align: center;
 }
 
-.hover {
-    color: #f50202;
-}
-
-.right {
-    box-align: right;
-    }
-
-.footer {
-    position:relative;
-    bottom:0;
-    width:100%;
-    height: 20px;  
-    
-}
-
-div.relative {
-    position: relative;
-    left: 30px;
-}
-
-.styleLink{
-    color: blue;
-    cursor: pointer;
-}
-
-.titleNavbarBackground{
-    background-color: #3366FF;
-}
-
-._hTitle{
-    color: white;
-    font-size: 25px;
-}
-
-.sText{
-    font-size: 10px;
-}
-
-.logo{
-    height:60;
-    width:60;
-}
-
-.fontMedium{
-    font-size: 10px
-}
-
-.navbarBackground{
-    background-color: #6699FF;
-}
-
-.customButton{
-    background-color: #98CCFF; 
-}
-
-.navLink{
-    color: white; 
-}
-
-.bPosition{
-    display: flex; 
-    justify-content: flex-end;
-}
-
-._abs-center{
-    position:absolute; 
-    margin-left: 35%; 
-    margin-top: 10%; 
-    margin-bottom: 10%; 
-    margin-right:35%;
-}
-
-._center{
+._center-relative{
     position: relative; 
     margin-top: 1%; 
     margin-left: 35%; 
     margin-bottom: 30%; 
     margin-right: 35%;
+}
+
+._table-margins{
+    margin-top: 1%; 
+    margin-bottom: 30%;
+}
+
+._pwd-eye{
+    position: relative; right:-170; transform: translateY(-160%); max-width: 30px;
+}
+
+._input-field{
+    background-color:#99ccff;
+    width:10cm;
+}
+
+._link{
+    color: blue; 
+}
+
+._link:hover{
+    color: lightskyblue;
+    cursor: pointer;
+}
+
+._bkg1{
+    background-color: #3366FF;
+}
+
+._bkg2{
+    background-color: #6699FF;
+}
+
+._bkg3{
+    background-color: #98CCFF;
+}
+
+._login-btn{
+    display: flex; 
+    justify-content: flex-end;
+}
+
+._title{
+    color: white; 
+    font-size: 4vw;
+}
+
+._subtitle{
+    color: white; 
+    font-size: 2.5vw;
+}
+
+._menu-text-color{
+    color: white;
+}
+
+._nav-style{
+    display: flex; 
+    justify-content: flex-end;
 }

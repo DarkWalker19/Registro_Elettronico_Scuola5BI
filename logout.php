@@ -16,7 +16,7 @@
         <?php
             print_header();
         ?>
-        <div style='position: relative; margin-top: 1%; margin-left: 35%; margin-bottom: 30%; margin-right: 35%;'>
+        <div class='_center-relative'>
 		    <p>Hai fatto logout correttamente</p>
 		    <p>Torna alla <button onclick="location.href='index.php'" type="button" class="btn btn-primary">Home</button></p>
         </div>

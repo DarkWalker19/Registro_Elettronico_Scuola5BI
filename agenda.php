@@ -336,7 +336,7 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $modalName . '">
                 ' . $btnText . '
             </button>            
-            <form method="POST" action="' . $formAction . '" style="text-align: center">
+            <form method="POST" action="' . $formAction . '" class="_center-text">
                 <div class="modal fade" id="' . $modalName . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalName . 'Label" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -360,7 +360,7 @@
     }
 
     function eventTable($section='', $events=[], $class=''){
-        $table = "<table class='table table-hover' style='text-align: center'>";
+        $table = "<table class='table table-hover' class='_center-text'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         $tableHeaders .= "<tr>
@@ -427,7 +427,7 @@
     }
 
     function studentClassTable($section='', $records=[]){
-        $table = "<table class='table table-hover' style='text-align: center'>";
+        $table = "<table class='table table-hover' class='_center-text'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         if($section == 's')
@@ -521,7 +521,7 @@
             $db = get_PDO_connection();
 
             if(isset($_GET['section'])){
-                echo "<div class='table-responsive' style='margin-top: 1%; margin-bottom: 30%;'>";
+                echo "<div class='table-responsive _table-margins'>";
 
                 $section = $_GET['section'];
 
@@ -530,7 +530,7 @@
                         // Tabella Assenze
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1 style='text-align: center'>Assenze</h1>";
+                        echo "<h1 class='_center-text'>Assenze</h1>";
 
                         $qry = 'SELECT * FROM evento WHERE Tipo = "Assenza" AND U_Matricola = ?';
                         $stm = $db->prepare($qry);
@@ -541,7 +541,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p style='text-align: center'>Non ci sono Assenze</p>";
+                            echo "<p class='_center-text'>Non ci sono Assenze</p>";
 
                         break;
         
@@ -549,7 +549,7 @@
                         // Tabella Ritardi
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1 style='text-align: center'>Ritardi</h1>";
+                        echo "<h1 class='_center-text'>Ritardi</h1>";
 
                         $qry = 'SELECT * FROM evento WHERE Tipo = "Ritardo" AND U_Matricola = ?';
                         $stm = $db->prepare($qry);
@@ -560,7 +560,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p style='text-align: center'>Non ci sono Ritardi</p>";
+                            echo "<p class='_center-text'>Non ci sono Ritardi</p>";
 
                         break;
                     
@@ -568,7 +568,7 @@
                         // Tabella Uscite
                         if($isAdmin) error("forbidden_page");
 
-                        echo "<h1 style='text-align: center'>Richieste di Uscita Anticipata</h1>";
+                        echo "<h1 class='_center-text'>Richieste di Uscita Anticipata</h1>";
 
                         if($_SESSION['adult']||check_role('parent'))
                             echo req_uscita_diag();
@@ -582,7 +582,7 @@
                             echo eventTable($section, $events);
                         }
                         else
-                            echo "<p style='text-align: center'>Non ci sono Richieste di Uscita Anticipata</p>";
+                            echo "<p class='_center-text'>Non ci sono Richieste di Uscita Anticipata</p>";
 
                         break;
 
@@ -603,7 +603,7 @@
                                 echo studentClassTable('s', $records);
                             }
                             else
-                                echo "<p style='text-align: center'>Non ci sono studenti appartenenti a questa classe</p>";
+                                echo "<p class='_center-text'>Non ci sono studenti appartenenti a questa classe</p>";
                         }
                         else{
                             $qry = 'SELECT * FROM appartenere INNER JOIN classe ON (C_Id = Id) WHERE U_Matricola = ?';
@@ -615,7 +615,7 @@
                                 echo studentClassTable('c', $records);
                             }
                             else
-                                echo "<p style='text-align: center'>Non appartieni a nessuna Classe</p>";
+                                echo "<p class='_center-text'>Non appartieni a nessuna Classe</p>";
                         }
                         
                         break;
@@ -630,7 +630,7 @@
                             echo eventTable('', $records, $_GET['class']);
                         }
                         else
-                            echo "<p style='text-align: center'>Non esistono eventi per questo utente</p>";
+                            echo "<p class='_center-text'>Non esistono eventi per questo utente</p>";
 
                         echo '<button class="btn btn-primary" onclick="location.href=\'agenda.php?section=c&class=' . $_GET['class'] . '\'" type="button" align="right">Indietro</button>';
                         break;
