@@ -24,7 +24,7 @@
 
             if(!isset($_SESSION['user'])){
                 echo    '<nav class="navbar navbar-expand-lg _bkg2">
-                            <div class="container-fluid _login-btn">';
+                            <div class="container-fluid" style="display: flex; justify-content: flex-end">';
                 echo            "<button class=\"btn btn-primary _bkg3\" onclick=\"location.href='login.php'\" type=\"button\">Login</button>
                             </div>
                         </nav>";

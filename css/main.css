@@ -45,11 +45,6 @@
     background-color: #98CCFF;
 }
 
-._login-btn{
-    display: flex; 
-    justify-content: flex-end;
-}
-
 ._title{
     color: white; 
     font-size: 3vw;
@@ -70,6 +65,6 @@
 }
 
 ._logo{
-    width: 8vw; 
-    height: 8vw;
+    width: 7vw; 
+    height: 7vw;
 }
