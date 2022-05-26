@@ -52,12 +52,12 @@
 
 ._title{
     color: white; 
-    font-size: 4vw;
+    font-size: 3vw;
 }
 
 ._subtitle{
     color: white; 
-    font-size: 2.5vw;
+    font-size: 1.5vw;
 }
 
 ._menu-text-color{
@@ -67,4 +67,9 @@
 ._nav-style{
     display: flex; 
     justify-content: flex-end;
+}
+
+._logo{
+    width: 8vw; 
+    height: 8vw;
 }

@@ -360,7 +360,7 @@
     }
 
     function eventTable($section='', $events=[], $class=''){
-        $table = "<table class='table table-hover' class='_center-text'>";
+        $table = "<table class='table table-hover _center-text'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         $tableHeaders .= "<tr>
@@ -427,7 +427,7 @@
     }
 
     function studentClassTable($section='', $records=[]){
-        $table = "<table class='table table-hover' class='_center-text'>";
+        $table = "<table class='table table-hover _center-text'>";
 
         $tableHeaders = "<thead class='table-primary'>";
         if($section == 's')
@@ -521,7 +521,7 @@
             $db = get_PDO_connection();
 
             if(isset($_GET['section'])){
-                echo "<div class='table-responsive _table-margins'>";
+                echo "<div class='table-responsive _table-margins _center-text'>";
 
                 $section = $_GET['section'];
 

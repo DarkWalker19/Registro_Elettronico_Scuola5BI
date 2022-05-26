@@ -15,7 +15,7 @@
                     </p>
                 </a>
                 <a href="https://www.itiscardanopv.edu.it/">
-                    <img src="./img/logo.png" alt="LogoRegistro" height="60" width="60"></img>
+                    <img src="./img/logo.png" alt="LogoRegistro" class="_logo"></img>
                 </a>
             </div>
         </nav>
